@@ -6,9 +6,10 @@ import Navigation from "./components/Navigation";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import KnowledgeBase from "./pages/KnowledgeBase";
-import LearningProgress from "./pages/LearningProgress";
 import Certifications from "./pages/Certifications";
 import Labs from "./pages/Labs";
+import Tutors from "./pages/Tutors";
+import PracticeExams from "./pages/PracticeExams";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +23,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          <Route path="/learning-progress" element={<LearningProgress />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/labs" element={<Labs />} />
+          <Route path="/tutors" element={<Tutors />} />
+          <Route path="/practice-exams" element={<PracticeExams />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

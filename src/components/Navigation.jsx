@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HomeIcon, LayoutDashboardIcon, BookOpenIcon, AwardIcon, BeakerIcon } from "lucide-react";
+import { HomeIcon, LayoutDashboardIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon } from "lucide-react";
 
 const Navigation = () => {
   return (
@@ -9,7 +9,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0">
-              <img className="h-12 w-auto" src="/logo.png" alt="Academia AWS Logo" />
+              <img className="h-12 w-auto" src="/logo.png" alt="Academia AWS NTTDATA Logo" />
             </Link>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -25,17 +25,21 @@ const Navigation = () => {
                   <BookOpenIcon className="inline-block mr-1 h-4 w-4" />
                   Base de Conhecimento
                 </Link>
-                <Link to="/learning-progress" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <AwardIcon className="inline-block mr-1 h-4 w-4" />
-                  Progresso de Aprendizado
-                </Link>
                 <Link to="/certifications" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
                   <AwardIcon className="inline-block mr-1 h-4 w-4" />
-                  Certificações AWS
+                  Certificações
                 </Link>
                 <Link to="/labs" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
                   <BeakerIcon className="inline-block mr-1 h-4 w-4" />
-                  Laboratórios Práticos
+                  Laboratórios
+                </Link>
+                <Link to="/tutors" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
+                  <UserIcon className="inline-block mr-1 h-4 w-4" />
+                  Tutores
+                </Link>
+                <Link to="/practice-exams" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
+                  <FileTextIcon className="inline-block mr-1 h-4 w-4" />
+                  Simulados
                 </Link>
               </div>
             </div>

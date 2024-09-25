@@ -25,7 +25,7 @@ const Index = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Academia AWS</CardTitle>
+          <CardTitle>Academia AWS NTTDATA</CardTitle>
           <CardDescription>Faça login para acessar o dashboard</CardDescription>
         </CardHeader>
         <CardContent>
