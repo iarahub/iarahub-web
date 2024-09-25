@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HomeIcon, UserIcon, ActivityIcon, LogOutIcon } from "lucide-react";
+import { HomeIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon, LogOutIcon } from "lucide-react";
 
 const Navigation = ({ onLogout }) => {
   return (
@@ -14,8 +14,11 @@ const Navigation = ({ onLogout }) => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <NavLink to="/dashboard" icon={<HomeIcon />}>Home</NavLink>
-                <NavLink to="/onboarding" icon={<UserIcon />}>Onboarding NTTDATA</NavLink>
-                <NavLink to="/iuclick-tracker" icon={<ActivityIcon />}>iuclick Tracker</NavLink>
+                <NavLink to="/knowledge-base" icon={<BookOpenIcon />}>Base de Conhecimento</NavLink>
+                <NavLink to="/certifications" icon={<AwardIcon />}>Certificações</NavLink>
+                <NavLink to="/labs" icon={<BeakerIcon />}>Laboratórios</NavLink>
+                <NavLink to="/tutors" icon={<UserIcon />}>Tutores</NavLink>
+                <NavLink to="/practice-exams" icon={<FileTextIcon />}>Simulados</NavLink>
               </div>
             </div>
           </div>
