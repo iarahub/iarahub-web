@@ -13,10 +13,11 @@ const Index = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
+    if (password === '123456') {
+      localStorage.setItem('username', username);
       navigate('/dashboard');
     } else {
-      toast.error("Credenciais inválidas. Use admin/admin para entrar.");
+      toast.error("Senha incorreta. Use 123456 para entrar.");
     }
   };
 
@@ -31,8 +32,8 @@ const Index = () => {
           <form onSubmit={handleLogin}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="username">Usuário</Label>
-                <Input id="username" placeholder="Digite seu usuário" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <Label htmlFor="username">Nome de Usuário</Label>
+                <Input id="username" placeholder="Digite seu nome" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="password">Senha</Label>

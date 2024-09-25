@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
+    localStorage.removeItem('username');
     navigate('/');
   };
 
@@ -14,7 +25,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Dashboard Academia AWS</h1>
+          <h1 className="text-3xl font-bold">Bem-vindo, {username}!</h1>
           <Button onClick={handleLogout}>Sair</Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
