@@ -53,6 +53,11 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
+        <div className="mt-6">
+          <Button onClick={() => navigate('/knowledge-base')}>
+            Acessar Base de Conhecimento StackSpo IA
+          </Button>
+        </div>
       </div>
     </div>
   );
