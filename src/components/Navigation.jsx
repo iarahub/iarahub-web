@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HomeIcon, LayoutDashboardIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon, LogOutIcon } from "lucide-react";
+import { HomeIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon, LogOutIcon } from "lucide-react";
 
 const Navigation = ({ onLogout }) => {
   return (
@@ -8,8 +8,8 @@ const Navigation = ({ onLogout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
-              <img className="h-12 w-auto" src="/logo.png" alt="Academia AWS NTTDATA Logo" />
+            <Link to="/" className="flex-shrink-0 text-xl font-bold">
+              iaraHub IA
             </Link>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">

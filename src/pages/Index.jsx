@@ -8,25 +8,24 @@ import { toast } from "sonner"
 
 const Index = ({ onLogin }) => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === '123456') {
+    if (username.trim() !== '') {
       localStorage.setItem('username', username);
       onLogin();
       navigate('/dashboard');
     } else {
-      toast.error("Senha incorreta. Use 123456 para entrar.");
+      toast.error("Por favor, insira um nome de usuário.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Card className="w-[350px]">
+      <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle className="text-primary">Academia AWS NTTDATA</CardTitle>
+          <CardTitle className="text-primary text-2xl">iaraHub IA</CardTitle>
           <CardDescription>Faça login para acessar o dashboard</CardDescription>
         </CardHeader>
         <CardContent>
@@ -36,15 +35,19 @@ const Index = ({ onLogin }) => {
                 <Label htmlFor="username">Nome de Usuário</Label>
                 <Input id="username" placeholder="Digite seu nome" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Senha</Label>
-                <Input id="password" type="password" placeholder="Digite sua senha" value={password} onChange={(e) => setPassword(e.target.value)} />
-              </div>
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button onClick={handleLogin} className="w-full bg-primary hover:bg-secondary text-white">Entrar</Button>
+        <CardFooter className="flex flex-col">
+          <Button onClick={handleLogin} className="w-full bg-primary hover:bg-secondary text-white mb-4">Entrar</Button>
+          <div className="text-sm text-gray-600">
+            <p className="font-semibold mb-2">Conheça nossos módulos:</p>
+            <ul className="list-disc pl-5">
+              <li>Academy AWS</li>
+              <li>Onboarding</li>
+              <li>Tracker Iuclick</li>
+            </ul>
+          </div>
         </CardFooter>
       </Card>
     </div>
