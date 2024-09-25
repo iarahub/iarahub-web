@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HomeIcon, LayoutDashboardIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon } from "lucide-react";
+import { HomeIcon, LayoutDashboardIcon, BookOpenIcon, AwardIcon, BeakerIcon, UserIcon, FileTextIcon, LogOutIcon } from "lucide-react";
 
-const Navigation = () => {
+const Navigation = ({ onLogout }) => {
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-primary text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -13,41 +13,30 @@ const Navigation = () => {
             </Link>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <Link to="/" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <HomeIcon className="inline-block mr-1 h-4 w-4" />
-                  Home
-                </Link>
-                <Link to="/dashboard" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <LayoutDashboardIcon className="inline-block mr-1 h-4 w-4" />
-                  Dashboard
-                </Link>
-                <Link to="/knowledge-base" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <BookOpenIcon className="inline-block mr-1 h-4 w-4" />
-                  Base de Conhecimento
-                </Link>
-                <Link to="/certifications" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <AwardIcon className="inline-block mr-1 h-4 w-4" />
-                  Certificações
-                </Link>
-                <Link to="/labs" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <BeakerIcon className="inline-block mr-1 h-4 w-4" />
-                  Laboratórios
-                </Link>
-                <Link to="/tutors" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <UserIcon className="inline-block mr-1 h-4 w-4" />
-                  Tutores
-                </Link>
-                <Link to="/practice-exams" className="text-gray-600 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
-                  <FileTextIcon className="inline-block mr-1 h-4 w-4" />
-                  Simulados
-                </Link>
+                <NavLink to="/dashboard" icon={<HomeIcon />}>Home</NavLink>
+                <NavLink to="/knowledge-base" icon={<BookOpenIcon />}>Base de Conhecimento</NavLink>
+                <NavLink to="/certifications" icon={<AwardIcon />}>Certificações</NavLink>
+                <NavLink to="/labs" icon={<BeakerIcon />}>Laboratórios</NavLink>
+                <NavLink to="/tutors" icon={<UserIcon />}>Tutores</NavLink>
+                <NavLink to="/practice-exams" icon={<FileTextIcon />}>Simulados</NavLink>
               </div>
             </div>
           </div>
+          <button onClick={onLogout} className="flex items-center text-white hover:text-secondary">
+            <LogOutIcon className="mr-2 h-4 w-4" />
+            Sair
+          </button>
         </div>
       </div>
     </nav>
   );
 };
+
+const NavLink = ({ to, icon, children }) => (
+  <Link to={to} className="text-white hover:text-secondary px-3 py-2 rounded-md text-sm font-medium flex items-center">
+    {React.cloneElement(icon, { className: "mr-1 h-4 w-4" })}
+    {children}
+  </Link>
+);
 
 export default Navigation;

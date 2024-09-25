@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,24 +14,36 @@ import PracticeExams from "./pages/PracticeExams";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <BrowserRouter>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          <Route path="/certifications" element={<Certifications />} />
-          <Route path="/labs" element={<Labs />} />
-          <Route path="/tutors" element={<Tutors />} />
-          <Route path="/practice-exams" element={<PracticeExams />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <BrowserRouter>
+          {isLoggedIn && <Navigation onLogout={handleLogout} />}
+          <Routes>
+            <Route path="/" element={<Index onLogin={handleLogin} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/knowledge-base" element={<KnowledgeBase />} />
+            <Route path="/certifications" element={<Certifications />} />
+            <Route path="/labs" element={<Labs />} />
+            <Route path="/tutors" element={<Tutors />} />
+            <Route path="/practice-exams" element={<PracticeExams />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

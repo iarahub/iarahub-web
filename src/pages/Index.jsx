@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 
-const Index = () => {
+const Index = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const Index = () => {
     e.preventDefault();
     if (password === '123456') {
       localStorage.setItem('username', username);
+      onLogin();
       navigate('/dashboard');
     } else {
       toast.error("Senha incorreta. Use 123456 para entrar.");
@@ -25,7 +26,7 @@ const Index = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Academia AWS NTTDATA</CardTitle>
+          <CardTitle className="text-primary">Academia AWS NTTDATA</CardTitle>
           <CardDescription>Faça login para acessar o dashboard</CardDescription>
         </CardHeader>
         <CardContent>
@@ -43,7 +44,7 @@ const Index = () => {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button onClick={handleLogin}>Entrar</Button>
+          <Button onClick={handleLogin} className="w-full bg-primary hover:bg-secondary text-white">Entrar</Button>
         </CardFooter>
       </Card>
     </div>
