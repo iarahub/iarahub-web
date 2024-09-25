@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom';
 import CertifiedPeople from '../components/CertifiedPeople';
+import IaraBot from '../components/IaraBot';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,6 +58,10 @@ const Dashboard = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Pessoas Certificadas</h2>
           <CertifiedPeople />
+        </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-4">IaraBot - StackSpot IA</h2>
+          <IaraBot />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Button onClick={() => navigate('/certifications')} className="w-full">
