@@ -43,9 +43,8 @@ const Index = ({ onLogin }) => {
           <div className="text-sm text-gray-600">
             <p className="font-semibold mb-2">Conheça nossos módulos:</p>
             <ul className="list-disc pl-5">
-              <li>Academy AWS</li>
-              <li>Onboarding</li>
-              <li>Tracker Iuclick</li>
+              <li>Onboarding NTTDATA</li>
+              <li>iuclick Tracker</li>
             </ul>
           </div>
         </CardFooter>
