@@ -38,16 +38,20 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <BrowserRouter>
-          {isLoggedIn && <Navigation onLogout={handleLogout} />}
-          <Routes>
-            <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Index onLogin={handleLogin} />} />
-            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
-            <Route path="/knowledge-base" element={isLoggedIn ? <KnowledgeBase /> : <Navigate to="/" />} />
-            <Route path="/certifications" element={isLoggedIn ? <Certifications /> : <Navigate to="/" />} />
-            <Route path="/labs" element={isLoggedIn ? <Labs /> : <Navigate to="/" />} />
-            <Route path="/tutors" element={isLoggedIn ? <Tutors /> : <Navigate to="/" />} />
-            <Route path="/practice-exams" element={isLoggedIn ? <PracticeExams /> : <Navigate to="/" />} />
-          </Routes>
+          <div className="min-h-screen bg-gray-100">
+            {isLoggedIn && <Navigation onLogout={handleLogout} />}
+            <div className="container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Index onLogin={handleLogin} />} />
+                <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
+                <Route path="/knowledge-base" element={isLoggedIn ? <KnowledgeBase /> : <Navigate to="/" />} />
+                <Route path="/certifications" element={isLoggedIn ? <Certifications /> : <Navigate to="/" />} />
+                <Route path="/labs" element={isLoggedIn ? <Labs /> : <Navigate to="/" />} />
+                <Route path="/tutors" element={isLoggedIn ? <Tutors /> : <Navigate to="/" />} />
+                <Route path="/practice-exams" element={isLoggedIn ? <PracticeExams /> : <Navigate to="/" />} />
+              </Routes>
+            </div>
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
