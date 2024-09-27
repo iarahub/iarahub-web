@@ -10,6 +10,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [progress, setProgress] = useState(0);
+  const [passingProbability, setPassingProbability] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -21,7 +22,14 @@ const Dashboard = () => {
 
     // Simulating progress loading
     const timer = setTimeout(() => setProgress(66), 500);
-    return () => clearTimeout(timer);
+
+    // Simulating passing probability calculation
+    const probabilityTimer = setTimeout(() => setPassingProbability(78), 800);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(probabilityTimer);
+    };
   }, [navigate]);
 
   const handleLogout = () => {
@@ -119,6 +127,18 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             </div>
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Possibilidade de passar na Prova</CardTitle>
+                <CardDescription>Avaliação da IARAHUB</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center">
+                  <Progress value={passingProbability} className="w-full mr-4" />
+                  <span className="text-2xl font-bold">{passingProbability}%</span>
+                </div>
+              </CardContent>
+            </Card>
             <div className="mb-8">
               <h2 className="text-2xl font-bold mb-4">Digital Lover's Certificados</h2>
               <CertifiedPeople />
