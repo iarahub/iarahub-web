@@ -11,6 +11,10 @@ import Certifications from "./pages/Certifications";
 import Labs from "./pages/Labs";
 import Tutors from "./pages/Tutors";
 import PracticeExams from "./pages/PracticeExams";
+import AwsAcademy from "./pages/AwsAcademy";
+import Onboarding from "./pages/Onboarding";
+import IuclickTracker from "./pages/IuclickTracker";
+import IaraTech from "./pages/IaraTech";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +53,10 @@ const App = () => {
                 <Route path="/labs" element={isLoggedIn ? <Labs /> : <Navigate to="/" />} />
                 <Route path="/tutors" element={isLoggedIn ? <Tutors /> : <Navigate to="/" />} />
                 <Route path="/practice-exams" element={isLoggedIn ? <PracticeExams /> : <Navigate to="/" />} />
+                <Route path="/aws-academy" element={isLoggedIn ? <AwsAcademy /> : <Navigate to="/" />} />
+                <Route path="/onboarding" element={isLoggedIn ? <Onboarding /> : <Navigate to="/" />} />
+                <Route path="/iuclick-tracker" element={isLoggedIn ? <IuclickTracker /> : <Navigate to="/" />} />
+                <Route path="/iara-tech" element={isLoggedIn ? <IaraTech /> : <Navigate to="/" />} />
               </Routes>
             </div>
           </div>
