@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import CertifiedPeople from '../components/CertifiedPeople';
+import IaraBot from '../components/IaraBot';
 import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma, BeakerIcon, Headphones, FileTextIcon, Users } from 'lucide-react';
 
 const Dashboard = () => {
@@ -162,6 +163,7 @@ const Dashboard = () => {
         </div>
         <Button onClick={handleLogout} className="mt-4">Sair</Button>
       </div>
+      <IaraBot />
     </div>
   );
 };
