@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import CertifiedPeople from '../components/CertifiedPeople';
-import { GraduationCap, UserIcon, ClockIcon, BrainIcon } from 'lucide-react';
+import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -29,6 +29,10 @@ const Dashboard = () => {
     { name: 'IUCLICK tracker', icon: <ClockIcon />, route: '/iuclick-tracker' },
     { name: 'IARA TECH', icon: <BrainIcon />, route: '/iara-tech' },
   ];
+
+  const openIaraFigma = () => {
+    window.open('https://app.uizard.io/p/5fdf42ee', '_blank');
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -65,7 +69,7 @@ const Dashboard = () => {
               <h2 className="text-2xl font-bold mb-4">Pessoas Certificadas</h2>
               <CertifiedPeople />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Button onClick={() => navigate('/certifications')} className="w-full">
                 Certificações AWS
               </Button>
@@ -74,6 +78,10 @@ const Dashboard = () => {
               </Button>
               <Button onClick={() => navigate('/practice-exams')} className="w-full">
                 Simulados
+              </Button>
+              <Button onClick={openIaraFigma} className="w-full bg-purple-600 hover:bg-purple-700">
+                <Figma className="mr-2 h-4 w-4" />
+                Ver Figma IARA
               </Button>
             </div>
           </div>
