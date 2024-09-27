@@ -25,6 +25,7 @@ module.exports = {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "#0067C0", // NTT DATA blue
+          dark: "#005299", // Darker shade for hover
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {

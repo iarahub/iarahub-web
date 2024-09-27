@@ -1,59 +1,66 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { toast } from "sonner"
-import IaraBot from '../components/IaraBot';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Index = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username.trim() !== '') {
-      localStorage.setItem('username', username);
+    if (email.trim() !== '' && password.trim() !== '') {
+      localStorage.setItem('username', email.split('@')[0]);
       onLogin();
       navigate('/dashboard');
     } else {
-      toast.error("Por favor, insira um nome de usuário.");
+      toast.error("Por favor, preencha todos os campos.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl flex space-x-8">
-        <Card className="w-[400px]">
-          <CardHeader>
-            <CardTitle className="text-primary text-2xl">iaraHub IA</CardTitle>
-            <CardDescription>Faça login para acessar o dashboard</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin}>
-              <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="username">Nome de Usuário</Label>
-                  <Input id="username" placeholder="Digite seu nome" value={username} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter className="flex flex-col">
-            <Button onClick={handleLogin} className="w-full bg-primary hover:bg-secondary text-white mb-4">Entrar</Button>
-            <div className="text-sm text-gray-600">
-              <p className="font-semibold mb-2">Conheça nossos módulos:</p>
-              <ul className="list-disc pl-5">
-                <li>Academy AWS</li>
-                <li>Onboarding</li>
-                <li>Tracker Iuclick</li>
-              </ul>
+      <div className="w-full max-w-md">
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="bg-primary p-4 flex items-center">
+            <img src="/logo.png" alt="iaraHub.IA" className="h-8 mr-2" />
+            <h1 className="text-white text-xl font-bold">iaraHub.IA</h1>
+          </div>
+          <form onSubmit={handleLogin} className="p-6">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-700">Bem vindo Digital Lover's</h2>
+              <img src="/nttdata-logo.png" alt="NTTDATA" className="h-6 mx-auto mt-2" />
             </div>
-          </CardFooter>
-        </Card>
-        <div className="w-[600px]">
-          <IaraBot />
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">email:</label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="marina.santiago@nttdata.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">senha:</label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+            </div>
+            <Button type="submit" className="w-full mt-6 bg-primary hover:bg-primary-dark">
+              Acessar
+            </Button>
+          </form>
         </div>
       </div>
     </div>
