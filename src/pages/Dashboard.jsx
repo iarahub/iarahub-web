@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Progress } from "@/components/ui/progress";
 import CertifiedPeople from '../components/CertifiedPeople';
 import IaraBot from '../components/IaraBot';
+import ExamCalendar from '../components/ExamCalendar';
 import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma, BeakerIcon, Headphones, FileTextIcon, Users } from 'lucide-react';
 
 const Dashboard = () => {
@@ -12,6 +13,7 @@ const Dashboard = () => {
   const [username, setUsername] = useState('');
   const [progress, setProgress] = useState(0);
   const [passingProbability, setPassingProbability] = useState(0);
+  const [examDate, setExamDate] = useState(new Date('2024-06-15')); // Example date, you can adjust as needed
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -59,8 +61,8 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start mb-8">
-          <div className="w-full md:w-1/4 mb-8 md:mb-0">
+        <div className="flex flex-col lg:flex-row justify-between items-start mb-8">
+          <div className="w-full lg:w-1/4 mb-8 lg:mb-0">
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="text-xl font-bold text-primary">Conheça nossos módulos</CardTitle>
@@ -100,7 +102,7 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
-          <div className="w-full md:w-3/4 pl-0 md:pl-8">
+          <div className="w-full lg:w-1/2 pl-0 lg:pl-8">
             <h1 className="text-3xl font-bold mb-4">Bem-vindo à Academia AWS NTTDATA, {username}!</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <Card>
@@ -159,6 +161,9 @@ const Dashboard = () => {
                 Ver Figma IARA
               </Button>
             </div>
+          </div>
+          <div className="w-full lg:w-1/4 mt-8 lg:mt-0">
+            <ExamCalendar examDate={examDate} />
           </div>
         </div>
         <Button onClick={handleLogout} className="mt-4">Sair</Button>
