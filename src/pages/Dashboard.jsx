@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import CertifiedPeople from '../components/CertifiedPeople';
 import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma, BeakerIcon, Headphones, FileTextIcon, Users } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -16,6 +18,10 @@ const Dashboard = () => {
     } else {
       navigate('/');
     }
+
+    // Simulating progress loading
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -108,7 +114,8 @@ const Dashboard = () => {
                   <CardDescription>Seu progresso nos cursos</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p>Você ainda não iniciou nenhum curso.</p>
+                  <Progress value={progress} className="w-full mb-2" />
+                  <p>{progress}% concluído</p>
                 </CardContent>
               </Card>
             </div>
