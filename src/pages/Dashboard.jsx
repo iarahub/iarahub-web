@@ -113,7 +113,7 @@ const Dashboard = () => {
               </Card>
             </div>
             <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Pessoas Certificadas</h2>
+              <h2 className="text-2xl font-bold mb-4">Digital Lover's Certificados</h2>
               <CertifiedPeople />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
