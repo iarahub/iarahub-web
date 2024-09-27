@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import CertifiedPeople from '../components/CertifiedPeople';
-import { AcademicCapIcon, UserIcon, ClockIcon, BrainIcon } from 'lucide-react';
+import { GraduationCap, UserIcon, ClockIcon, BrainIcon } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Dashboard = () => {
   };
 
   const sideButtons = [
-    { name: 'AWS Academy', icon: <AcademicCapIcon />, route: '/aws-academy' },
+    { name: 'AWS Academy', icon: <GraduationCap />, route: '/aws-academy' },
     { name: 'Onboarding', icon: <UserIcon />, route: '/onboarding' },
     { name: 'IUCLICK tracker', icon: <ClockIcon />, route: '/iuclick-tracker' },
     { name: 'IARA TECH', icon: <BrainIcon />, route: '/iara-tech' },
