@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import CertifiedPeople from '../components/CertifiedPeople';
-import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma } from 'lucide-react';
+import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma, BeakerIcon, Headphones, FileTextIcon, Users } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,6 +30,13 @@ const Dashboard = () => {
     { name: 'IARA TECH', icon: <BrainIcon />, route: '/iara-tech' },
   ];
 
+  const iaraHubOptions = [
+    { name: 'Laboratórios', icon: <BeakerIcon />, route: '/labs' },
+    { name: 'PodCast', icon: <Headphones />, route: '/podcast' },
+    { name: 'Simulados', icon: <FileTextIcon />, route: '/practice-exams' },
+    { name: 'Tutores', icon: <Users />, route: '/tutors' },
+  ];
+
   const openIaraFigma = () => {
     window.open('https://app.uizard.io/p/5fdf42ee', '_blank');
   };
@@ -53,6 +60,25 @@ const Dashboard = () => {
                     >
                       {React.cloneElement(button.icon, { className: "w-8 h-8 mb-2" })}
                       <span className="text-xs text-center">{button.name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-primary">IaraHub para você!</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  {iaraHubOptions.map((option, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => navigate(option.route)}
+                      className="w-full h-24 flex flex-col items-center justify-center bg-green-600 hover:bg-green-700 text-white rounded-lg"
+                    >
+                      {React.cloneElement(option.icon, { className: "w-8 h-8 mb-2" })}
+                      <span className="text-xs text-center">{option.name}</span>
                     </Button>
                   ))}
                 </div>
