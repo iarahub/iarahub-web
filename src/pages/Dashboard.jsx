@@ -38,7 +38,28 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start mb-8">
-          <div className="w-full md:w-3/4 pr-0 md:pr-8">
+          <div className="w-full md:w-1/4 mb-8 md:mb-0">
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-primary">Conheça nossos módulos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  {sideButtons.map((button, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => navigate(button.route)}
+                      className="w-full h-24 flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                    >
+                      {React.cloneElement(button.icon, { className: "w-8 h-8 mb-2" })}
+                      <span className="text-xs text-center">{button.name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="w-full md:w-3/4 pl-0 md:pl-8">
             <h1 className="text-3xl font-bold mb-4">Bem-vindo à Academia AWS NTTDATA, {username}!</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <Card>
@@ -83,20 +104,6 @@ const Dashboard = () => {
                 <Figma className="mr-2 h-4 w-4" />
                 Ver Figma IARA
               </Button>
-            </div>
-          </div>
-          <div className="w-full md:w-1/4 mt-8 md:mt-0">
-            <div className="grid grid-cols-2 gap-4">
-              {sideButtons.map((button, index) => (
-                <Button
-                  key={index}
-                  onClick={() => navigate(button.route)}
-                  className="w-full h-24 flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-                >
-                  {React.cloneElement(button.icon, { className: "w-8 h-8 mb-2" })}
-                  <span className="text-xs text-center">{button.name}</span>
-                </Button>
-              ))}
             </div>
           </div>
         </div>
