@@ -3,15 +3,7 @@ import { Amplify } from 'aws-amplify';
 import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-// Configure Amplify
-Amplify.configure({
-  ...awsConfig,
-  oauth: {
-    ...awsConfig.oauth,
-    redirectSignIn: window.location.origin,
-    redirectSignOut: window.location.origin,
-  },
-});
+Amplify.configure(awsConfig);
 
 const AuthContext = createContext(null);
 
