@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navigation from "./components/Navigation";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
@@ -18,24 +18,22 @@ import IaraTech from "./pages/IaraTech";
 
 const queryClient = new QueryClient();
 
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (username) {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    setIsLoggedIn(false);
-  };
+  const { user, logout } = useAuth();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -43,20 +41,20 @@ const App = () => {
         <Toaster />
         <BrowserRouter>
           <div className="min-h-screen bg-gray-100">
-            {isLoggedIn && <Navigation onLogout={handleLogout} />}
+            {user && <Navigation onLogout={logout} />}
             <div className="container mx-auto px-4 py-8">
               <Routes>
-                <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Index onLogin={handleLogin} />} />
-                <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
-                <Route path="/knowledge-base" element={isLoggedIn ? <KnowledgeBase /> : <Navigate to="/" />} />
-                <Route path="/certifications" element={isLoggedIn ? <Certifications /> : <Navigate to="/" />} />
-                <Route path="/labs" element={isLoggedIn ? <Labs /> : <Navigate to="/" />} />
-                <Route path="/tutors" element={isLoggedIn ? <Tutors /> : <Navigate to="/" />} />
-                <Route path="/practice-exams" element={isLoggedIn ? <PracticeExams /> : <Navigate to="/" />} />
-                <Route path="/aws-academy" element={isLoggedIn ? <AwsAcademy /> : <Navigate to="/" />} />
-                <Route path="/onboarding" element={isLoggedIn ? <Onboarding /> : <Navigate to="/" />} />
-                <Route path="/iuclick-tracker" element={isLoggedIn ? <IuclickTracker /> : <Navigate to="/" />} />
-                <Route path="/iara-tech" element={isLoggedIn ? <IaraTech /> : <Navigate to="/" />} />
+                <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Index />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/knowledge-base" element={<ProtectedRoute><KnowledgeBase /></ProtectedRoute>} />
+                <Route path="/certifications" element={<ProtectedRoute><Certifications /></ProtectedRoute>} />
+                <Route path="/labs" element={<ProtectedRoute><Labs /></ProtectedRoute>} />
+                <Route path="/tutors" element={<ProtectedRoute><Tutors /></ProtectedRoute>} />
+                <Route path="/practice-exams" element={<ProtectedRoute><PracticeExams /></ProtectedRoute>} />
+                <Route path="/aws-academy" element={<ProtectedRoute><AwsAcademy /></ProtectedRoute>} />
+                <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+                <Route path="/iuclick-tracker" element={<ProtectedRoute><IuclickTracker /></ProtectedRoute>} />
+                <Route path="/iara-tech" element={<ProtectedRoute><IaraTech /></ProtectedRoute>} />
               </Routes>
             </div>
           </div>
@@ -66,4 +64,10 @@ const App = () => {
   );
 };
 
-export default App;
+const AppWithAuth = () => (
+  <AuthProvider>
+    <App />
+  </AuthProvider>
+);
+
+export default AppWithAuth;
