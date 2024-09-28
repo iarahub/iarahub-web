@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
-import { Amplify } from 'aws-amplify/core';
+import { signIn, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+import { Amplify } from '@aws-amplify/core';
 import awsConfig from '../config/cognito';
 
 Amplify.configure(awsConfig);
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       await signOut();
       setUser(null);
     } catch (error) {
-      console.error('Error signing out: ', error);
+      console.error("Error signing out: ", error);
     }
   }
 
@@ -58,4 +58,6 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
