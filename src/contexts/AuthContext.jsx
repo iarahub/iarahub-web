@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
+import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
+import { Amplify } from 'aws-amplify/core';
 import awsConfig from '../config/cognito';
 
 Amplify.configure(awsConfig);
@@ -27,9 +27,13 @@ export const AuthProvider = ({ children }) => {
 
   async function login(username, password) {
     try {
-      const user = await signIn({ username, password });
-      setUser(user);
-      return user;
+      const { isSignedIn, nextStep } = await signIn({ username, password });
+      if (isSignedIn) {
+        const userData = await getCurrentUser();
+        setUser(userData);
+        return userData;
+      }
+      return nextStep;
     } catch (error) {
       throw error;
     }
