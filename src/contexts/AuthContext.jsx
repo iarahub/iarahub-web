@@ -3,7 +3,7 @@ import { Amplify } from '@aws-amplify/core';
 import { signIn, signOut, getCurrentUser } from '@aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-// Update Amplify configuration
+// Update Amplify configuration with OAuth settings
 Amplify.configure({
   ...awsConfig,
   oauth: {
