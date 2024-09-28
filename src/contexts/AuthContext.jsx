@@ -1,7 +1,16 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
-import awsConfig from '../config/cognito';
+
+// Update the configuration
+const awsConfig = {
+  Auth: {
+    region: 'us-east-1',
+    userPoolId: 'us-east-1_bmO9UTdOf',
+    userPoolWebClientId: '4810mtji22ul6ahbdi6urrvtaa',
+    // Remove the OAuth configuration if you're not using it
+  }
+};
 
 Amplify.configure(awsConfig);
 
