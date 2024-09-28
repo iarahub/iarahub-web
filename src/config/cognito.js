@@ -6,8 +6,8 @@ const awsConfig = {
     oauth: {
       domain: 'your-cognito-domain.auth.us-east-1.amazoncognito.com',
       scope: ['email', 'profile', 'openid'],
-      redirectSignIn: 'http://localhost:3000/',
-      redirectSignOut: 'http://localhost:3000/',
+      redirectSignIn: window.location.origin,
+      redirectSignOut: window.location.origin,
       responseType: 'code'
     }
   }
