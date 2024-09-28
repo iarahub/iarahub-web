@@ -3,23 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAuth } from '../contexts/AuthContext';
 
-const Index = () => {
+const Index = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     if (email.trim() !== '' && password.trim() !== '') {
-      try {
-        await login(email, password);
-        navigate('/dashboard');
-      } catch (error) {
-        toast.error(error.message || "An error occurred during login.");
-      }
+      localStorage.setItem('username', email.split('@')[0]);
+      onLogin();
+      navigate('/dashboard');
     } else {
       toast.error("Por favor, preencha todos os campos.");
     }

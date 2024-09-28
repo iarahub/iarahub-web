@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -7,14 +7,38 @@ import CertifiedPeople from '../components/CertifiedPeople';
 import IaraBot from '../components/IaraBot';
 import ExamCalendar from '../components/ExamCalendar';
 import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Figma, BeakerIcon, Headphones, FileTextIcon, Users } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const [progress, setProgress] = useState(66);
-  const [passingProbability, setPassingProbability] = useState(78);
-  const [examDate, setExamDate] = useState(new Date('2024-06-15'));
+  const [username, setUsername] = useState('');
+  const [progress, setProgress] = useState(0);
+  const [passingProbability, setPassingProbability] = useState(0);
+  const [examDate, setExamDate] = useState(new Date('2024-06-15')); // Example date, you can adjust as needed
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      navigate('/');
+    }
+
+    // Simulating progress loading
+    const timer = setTimeout(() => setProgress(66), 500);
+
+    // Simulating passing probability calculation
+    const probabilityTimer = setTimeout(() => setPassingProbability(78), 800);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(probabilityTimer);
+    };
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    navigate('/');
+  };
 
   const sideButtons = [
     { name: 'AWS Academy', icon: <GraduationCap />, route: '/aws-academy' },
@@ -79,7 +103,7 @@ const Dashboard = () => {
             </Card>
           </div>
           <div className="w-full lg:w-1/2 pl-0 lg:pl-8">
-            <h1 className="text-3xl font-bold mb-4">Bem-vindo à Academia AWS NTTDATA, {user?.attributes?.name || 'Usuário'}!</h1>
+            <h1 className="text-3xl font-bold mb-4">Bem-vindo à Academia AWS NTTDATA, {username}!</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <Card>
                 <CardHeader>
@@ -142,7 +166,7 @@ const Dashboard = () => {
             <ExamCalendar examDate={examDate} />
           </div>
         </div>
-        <Button onClick={logout} className="mt-4">Sair</Button>
+        <Button onClick={handleLogout} className="mt-4">Sair</Button>
       </div>
       <IaraBot />
     </div>
