@@ -1,9 +1,17 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { signIn, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
 import { Amplify } from '@aws-amplify/core';
+import { signIn, signOut, getCurrentUser } from '@aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-Amplify.configure(awsConfig);
+// Update Amplify configuration
+Amplify.configure({
+  ...awsConfig,
+  oauth: {
+    ...awsConfig.oauth,
+    redirectSignIn: window.location.origin,
+    redirectSignOut: window.location.origin
+  }
+});
 
 const AuthContext = createContext(null);
 
