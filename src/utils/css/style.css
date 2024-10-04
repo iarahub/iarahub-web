@@ -1,0 +1,13 @@
+.destaque {
+    background-color: #f0f8ff; /* Cor de fundo leve */
+    border: 2px solid #4caf50; /* Borda verde */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+}
+
+.titulo {
+    color: #4caf50; /* Cor do texto verde */
+    font-size: 24px; /* Tamanho da fonte aumentado */
+    font-weight: bold; /* Texto em negrito */
+}

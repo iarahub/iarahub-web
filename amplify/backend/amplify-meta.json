@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-aws-dev-84319-authRole",
+      "UnauthRoleArn": "arn:aws:iam::867344473186:role/amplify-aws-dev-84319-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::867344473186:role/amplify-aws-dev-84319-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-aws-dev-84319-deployment",
+      "UnauthRoleName": "amplify-aws-dev-84319-unauthRole",
+      "StackName": "amplify-aws-dev-84319",
+      "StackId": "arn:aws:cloudformation:us-east-1:867344473186:stack/amplify-aws-dev-84319/3871cd70-7d2c-11ef-9bc5-0afff5cc70a7",
+      "AmplifyAppId": "d26w1s5whfg71c"
+    }
+  },
+  "auth": {
+    "aws960c0bc3": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-aws-dev-84319-deployment/amplify-cfn-templates/auth/aws960c0bc3-cloudformation-template.json",
+        "logicalId": "authaws960c0bc3"
+      },
+      "lastPushTimeStamp": "2024-09-28T00:02:38.136Z",
+      "output": {
+        "UserPoolId": "us-east-1_duYM97Wmu",
+        "AppClientIDWeb": "po627tu7qatu642tpcqh9thos",
+        "AppClientID": "6cngethoqj384g4qel80h99kgt",
+        "IdentityPoolId": "us-east-1:0cc63452-1343-445f-ac75-7cd8b05b4d05",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:867344473186:userpool/us-east-1_duYM97Wmu",
+        "IdentityPoolName": "aws960c0bc3_identitypool_960c0bc3__dev",
+        "UserPoolName": "aws960c0bc3_userpool_960c0bc3"
+      },
+      "lastPushDirHash": "w3dEBRUHDt8prrPbeIblmXHLFys="
+    }
+  }
+}
