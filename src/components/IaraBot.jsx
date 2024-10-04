@@ -27,6 +27,9 @@ const IaraBot = () => {
     if (isScriptLoaded && isOpen && window.Chatbox) {
       window.Chatbox.initStandard({
         agentId: 'cm1tyfnu0004rj1kg8x0hwxin',
+        container: '#chatvolt-chatbox-container',
+        height: '500px',
+        width: '100%',
       });
     }
   }, [isScriptLoaded, isOpen]);
