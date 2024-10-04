@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [username, setUsername] = useState('');
   const [progress, setProgress] = useState(0);
   const [passingProbability, setPassingProbability] = useState(0);
-  const [examDate, setExamDate] = useState(new Date('2024-06-15')); // Example date, you can adjust as needed
+  const [examDate, setExamDate] = useState(new Date('2024-06-15'));
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -59,10 +59,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between items-start mb-8">
-          <div className="w-full lg:w-1/4 mb-8 lg:mb-0">
+        <div className="flex flex-col lg:flex-row justify-between items-start mb-8 gap-8">
+          <div className="w-full lg:w-1/4">
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="text-xl font-bold text-primary">Conheça nossos módulos</CardTitle>
@@ -102,7 +102,7 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
-          <div className="w-full lg:w-1/2 pl-0 lg:pl-8">
+          <div className="w-full lg:w-1/2">
             <h1 className="text-3xl font-bold mb-4">Bem-vindo à Academia AWS NTTDATA, {username}!</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <Card>
@@ -146,7 +146,7 @@ const Dashboard = () => {
               <h2 className="text-2xl font-bold mb-4">Digital Lover's Certificados</h2>
               <CertifiedPeople />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <Button onClick={() => navigate('/certifications')} className="w-full">
                 Certificações AWS
               </Button>
