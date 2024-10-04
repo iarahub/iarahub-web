@@ -5,6 +5,7 @@ import { MessageCircle } from 'lucide-react';
 
 const IaraBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -14,15 +15,21 @@ const IaraBot = () => {
     document.body.appendChild(script);
 
     script.onload = () => {
-      window.Chatbox.initStandard({
-        agentId: 'cm1tyfnu0004rj1kg8x0hwxin',
-      });
+      setIsScriptLoaded(true);
     };
 
     return () => {
       document.body.removeChild(script);
     };
   }, []);
+
+  useEffect(() => {
+    if (isScriptLoaded && window.Chatbox) {
+      window.Chatbox.initStandard({
+        agentId: 'cm1tyfnu0004rj1kg8x0hwxin',
+      });
+    }
+  }, [isScriptLoaded]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
