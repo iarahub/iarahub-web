@@ -24,12 +24,15 @@ const IaraBot = () => {
   }, []);
 
   useEffect(() => {
-    if (isScriptLoaded && window.Chatbox) {
+    if (isScriptLoaded && isOpen && window.Chatbox) {
       window.Chatbox.initStandard({
         agentId: 'cm1tyfnu0004rj1kg8x0hwxin',
+        container: '#chatvolt-chatbox-container',
+        height: '500px',
+        width: '100%',
       });
     }
-  }, [isScriptLoaded]);
+  }, [isScriptLoaded, isOpen]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -53,7 +56,7 @@ const IaraBot = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <chatvolt-chatbox-standard style={{ width: '100%', height: '500px' }} />
+            <div id="chatvolt-chatbox-container" style={{ width: '100%', height: '500px' }}></div>
           </CardContent>
         </Card>
       )}
