@@ -9,7 +9,7 @@ okhttp = "4.9.1"
 
 [dependencies]
 # Dependências principais do projeto
-kotlin-stdlib = { version = "kotlin", module = "org.jetbrains.kotlin:kotlin-stdlib" }
+kotlin-stdlib = { version = "kotlin", module = "com.google.firebase" }
 kotlin-coroutines = { version = "coroutines", module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
 retrofit = { version = "retrofit", module = "com.squareup.retrofit2:retrofit" }
 okhttp = { version = "okhttp", module = "com.squareup.okhttp3:okhttp" }
