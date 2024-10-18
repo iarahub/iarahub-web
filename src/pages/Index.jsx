@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Auth } from 'aws-amplify/auth';
 import { useAuth } from '../contexts/AuthContext';
 
 const Index = () => {
