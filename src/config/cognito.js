@@ -1,16 +1,10 @@
 const awsConfig = {
   Auth: {
     region: 'us-east-1',
-    userPoolId: 'us-east-1_bmO9UTdOf',
-    userPoolWebClientId: '4810mtji22ul6ahbdi6urrvtaa',
-    clientSecret: 'adddcvjgvsjmtan8mjdrpf06dd2i9tfa7r1ta17ekopkqtlfffd', // ATENÇÃO: Não exponha em produção
-    oauth: {
-      domain: 'your-cognito-domain.auth.us-east-1.amazoncognito.com',
-      scope: ['email', 'profile', 'openid'],
-      redirectSignIn: window.location.origin,
-      redirectSignOut: window.location.origin,
-      responseType: 'code'
-    }
+    userPoolId: 'us-east-1_duYM97Wmu',
+    userPoolWebClientId: 'po627tu7qatu642tpcqh9thos',
+    // Remove the clientSecret as it's not typically used in the frontend
+    // Remove the oauth configuration if not needed
   }
 };
 

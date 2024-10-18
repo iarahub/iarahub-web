@@ -3,7 +3,17 @@ import { Amplify } from 'aws-amplify';
 import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-Amplify.configure(awsConfig);
+// Remove OAuth configuration if not needed
+const configWithoutOAuth = {
+  ...awsConfig,
+  oauth: undefined
+};
+
+try {
+  Amplify.configure(configWithoutOAuth);
+} catch (error) {
+  console.error("Error configuring Amplify:", error);
+}
 
 const AuthContext = createContext(null);
 
@@ -20,6 +30,7 @@ export const AuthProvider = ({ children }) => {
       const userData = await getCurrentUser();
       setUser(userData);
     } catch (err) {
+      console.error("Error checking user:", err);
       setUser(null);
     }
     setLoading(false);
