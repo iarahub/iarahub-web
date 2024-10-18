@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
+import { Auth } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
 Amplify.configure(awsConfig);
