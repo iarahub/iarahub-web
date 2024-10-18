@@ -3,18 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Auth } from 'aws-amplify';
+import { useAuth } from '../contexts/AuthContext';
 
-const Index = ({ onLogin }) => {
+const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (email.trim() !== '' && password.trim() !== '') {
-      localStorage.setItem('username', email.split('@')[0]);
-      onLogin();
-      navigate('/dashboard');
+      try {
+        await login(email, password);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Error during login:', error);
+        toast.error("Falha no login. Por favor, verifique suas credenciais.");
+      }
     } else {
       toast.error("Por favor, preencha todos os campos.");
     }

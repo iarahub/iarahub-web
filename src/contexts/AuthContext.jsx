@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
+import { Amplify, Auth } from 'aws-amplify';
 import awsConfig from '../config/cognito';
 
 Amplify.configure(awsConfig);
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   async function checkUser() {
     try {
-      const userData = await getCurrentUser();
+      const userData = await Auth.currentAuthenticatedUser();
       setUser(userData);
     } catch (err) {
       setUser(null);
@@ -27,21 +26,18 @@ export const AuthProvider = ({ children }) => {
 
   async function login(username, password) {
     try {
-      const { isSignedIn, nextStep } = await signIn({ username, password });
-      if (isSignedIn) {
-        const userData = await getCurrentUser();
-        setUser(userData);
-        return userData;
-      }
-      return nextStep;
+      const user = await Auth.signIn(username, password);
+      setUser(user);
+      return user;
     } catch (error) {
+      console.error("Error signing in: ", error);
       throw error;
     }
   }
 
   async function logout() {
     try {
-      await signOut();
+      await Auth.signOut();
       setUser(null);
     } catch (error) {
       console.error("Error signing out: ", error);
