@@ -27,10 +27,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md">
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="bg-primary p-4 flex items-center">
+          <div className="bg-blue-600 p-4 flex items-center">
             <img src="/logo.png" alt="iaraHub.IA" className="h-8 mr-2" />
             <h1 className="text-white text-xl font-bold">iaraHub.IA</h1>
           </div>
@@ -63,7 +63,7 @@ const Index = () => {
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full mt-6 bg-primary hover:bg-primary-dark">
+            <Button type="submit" className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
               Acessar
             </Button>
           </form>
