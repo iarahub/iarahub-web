@@ -38,7 +38,13 @@ export const AuthProvider = ({ children }) => {
 
   async function login(username, password) {
     try {
-      const user = await signIn({ username, password });
+      const user = await signIn({ 
+        username, 
+        password,
+        options: {
+          clientSecret: awsConfig.Auth.clientSecret
+        }
+      });
       setUser(user);
       return user;
     } catch (error) {
