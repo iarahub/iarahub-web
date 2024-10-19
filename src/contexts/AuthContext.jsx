@@ -3,17 +3,7 @@ import { Amplify } from 'aws-amplify';
 import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-// Remove OAuth configuration if not needed
-const configWithoutOAuth = {
-  ...awsConfig,
-  oauth: undefined
-};
-
-try {
-  Amplify.configure(configWithoutOAuth);
-} catch (error) {
-  console.error("Error configuring Amplify:", error);
-}
+Amplify.configure(awsConfig);
 
 const AuthContext = createContext(null);
 
@@ -42,6 +32,8 @@ export const AuthProvider = ({ children }) => {
         username, 
         password,
         options: {
+          // Note: Using clientSecret here might not be necessary for most Cognito setups
+          // Remove this if it causes issues
           clientSecret: awsConfig.Auth.clientSecret
         }
       });
