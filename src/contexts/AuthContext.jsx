@@ -3,11 +3,7 @@ import { Amplify } from 'aws-amplify';
 import { signInWithRedirect, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-try {
-  Amplify.configure(awsConfig);
-} catch (error) {
-  console.error("Error configuring Amplify:", error);
-}
+Amplify.configure(awsConfig);
 
 const AuthContext = createContext(null);
 
@@ -24,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       const userData = await getCurrentUser();
       setUser(userData);
     } catch (err) {
-      console.error("Error checking user:", err);
+      console.log('No user signed in');
       setUser(null);
     }
     setLoading(false);
