@@ -1,58 +1,39 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
-import awsConfig from '../config/cognito';
-
-// Configure Amplify with a try-catch block to handle potential errors
-try {
-  const configWithoutOAuth = {
-    ...awsConfig,
-    oauth: undefined // Remove OAuth configuration
-  };
-  Amplify.configure(configWithoutOAuth);
-} catch (error) {
-  console.error("Error configuring Amplify:", error);
-}
+import React, { createContext, useState, useContext } from 'react';
+import { toast } from "sonner";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+  // Lista de usuários permitidos
+  const allowedUsers = [
+    { email: 'marina.santiago@nttdata.com', name: 'Marina Santiago' },
+    { email: 'admin@nttdata.com', name: 'Admin' }
+  ];
 
-  async function checkUser() {
+  async function login(email, password) {
+    setLoading(true);
     try {
-      const userData = await getCurrentUser();
-      setUser(userData);
-    } catch (err) {
-      console.error("Error checking user:", err);
-      setUser(null);
-    }
-    setLoading(false);
-  }
-
-  async function login(username, password) {
-    try {
-      const user = await signIn({ username, password });
-      setUser(user);
-      return user;
-    } catch (error) {
-      console.error("Error signing in: ", error);
-      throw error;
+      const user = allowedUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+      
+      if (user) {
+        setUser(user);
+        toast.success("Login realizado com sucesso!");
+        return user;
+      } else {
+        toast.error("Usuário não encontrado.");
+        throw new Error("Usuário não encontrado");
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
   async function logout() {
-    try {
-      await signOut();
-      setUser(null);
-    } catch (error) {
-      console.error("Error signing out: ", error);
-    }
+    setUser(null);
+    toast.success("Logout realizado com sucesso!");
   }
 
   const value = {

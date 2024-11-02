@@ -13,7 +13,7 @@ const Index = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (email.trim() !== '' && password.trim() !== '') {
+    if (email.trim() !== '') {
       try {
         await login(email, password);
         navigate('/dashboard');
@@ -22,7 +22,7 @@ const Index = () => {
         toast.error("Falha no login. Por favor, verifique suas credenciais.");
       }
     } else {
-      toast.error("Por favor, preencha todos os campos.");
+      toast.error("Por favor, preencha o email.");
     }
   };
 
