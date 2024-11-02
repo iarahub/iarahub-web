@@ -7,16 +7,10 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If user is already authenticated, redirect to dashboard
     if (user) {
       navigate('/dashboard');
     } else {
-      // Check if we're on the login page directly
-      const isDirectAccess = !document.referrer.includes('iarahub.auth.us-east-1.amazoncognito.com');
-      if (isDirectAccess) {
-        // Redirect to login through Cognito
-        login();
-      }
+      login();
     }
   }, [user, navigate, login]);
 
