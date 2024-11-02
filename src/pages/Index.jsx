@@ -3,28 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useAuth } from '../contexts/AuthContext';
 
-const Index = ({ onLogin }) => {
+const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email.trim() !== '' && password.trim() !== '') {
-      localStorage.setItem('username', email.split('@')[0]);
-      onLogin();
-      navigate('/dashboard');
+    if (email.trim() !== '') {
+      try {
+        await login(email, password);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Error during login:', error);
+        toast.error("Falha no login. Por favor, verifique suas credenciais.");
+      }
     } else {
-      toast.error("Por favor, preencha todos os campos.");
+      toast.error("Por favor, preencha o email.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md">
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="bg-primary p-4 flex items-center">
+          <div className="bg-blue-600 p-4 flex items-center">
             <img src="/logo.png" alt="iaraHub.IA" className="h-8 mr-2" />
             <h1 className="text-white text-xl font-bold">iaraHub.IA</h1>
           </div>
@@ -57,7 +63,7 @@ const Index = ({ onLogin }) => {
                 />
               </div>
             </div>
-            <Button type="submit" className="w-full mt-6 bg-primary hover:bg-primary-dark">
+            <Button type="submit" className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
               Acessar
             </Button>
           </form>
