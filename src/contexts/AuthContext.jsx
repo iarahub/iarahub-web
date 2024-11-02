@@ -1,39 +1,41 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { Auth } from '@aws-amplify/auth';
 import { toast } from "sonner";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Lista de usuários permitidos
-  const allowedUsers = [
-    { email: 'marina.santiago@nttdata.com', name: 'Marina Santiago' },
-    { email: 'admin@nttdata.com', name: 'Admin' }
-  ];
+  useEffect(() => {
+    checkUser();
+  }, []);
 
-  async function login(email, password) {
-    setLoading(true);
+  async function checkUser() {
     try {
-      const user = allowedUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-      
-      if (user) {
-        setUser(user);
-        toast.success("Login realizado com sucesso!");
-        return user;
-      } else {
-        toast.error("Usuário não encontrado.");
-        throw new Error("Usuário não encontrado");
-      }
+      const userData = await Auth.currentAuthenticatedUser();
+      setUser(userData);
+    } catch (error) {
+      setUser(null);
     } finally {
       setLoading(false);
     }
   }
 
+  async function login() {
+    window.location.href = 'https://iarahub.auth.us-east-1.amazoncognito.com/login?client_id=5j5l279nm9o6mfss3dm2qrprb1&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fwww.iarahub.com.br';
+  }
+
   async function logout() {
-    setUser(null);
-    toast.success("Logout realizado com sucesso!");
+    try {
+      await Auth.signOut();
+      setUser(null);
+      toast.success("Logout realizado com sucesso!");
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error("Erro ao realizar logout.");
+    }
   }
 
   const value = {
