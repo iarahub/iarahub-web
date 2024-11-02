@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Auth } from '@aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import { signOut, getCurrentUser } from '@aws-amplify/auth';
 import { toast } from "sonner";
 
 const AuthContext = createContext(null);
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   async function checkUser() {
     try {
-      const userData = await Auth.currentAuthenticatedUser();
+      const userData = await getCurrentUser();
       setUser(userData);
     } catch (error) {
       setUser(null);
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   async function logout() {
     try {
-      await Auth.signOut();
+      await signOut();
       setUser(null);
       toast.success("Logout realizado com sucesso!");
     } catch (error) {
