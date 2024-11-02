@@ -3,7 +3,16 @@ import { Amplify } from 'aws-amplify';
 import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
-Amplify.configure(awsConfig);
+// Configure Amplify with a try-catch block to handle potential errors
+try {
+  const configWithoutOAuth = {
+    ...awsConfig,
+    oauth: undefined // Remove OAuth configuration
+  };
+  Amplify.configure(configWithoutOAuth);
+} catch (error) {
+  console.error("Error configuring Amplify:", error);
+}
 
 const AuthContext = createContext(null);
 
