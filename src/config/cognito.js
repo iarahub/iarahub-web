@@ -6,16 +6,9 @@ const awsConfig = {
     oauth: {
       domain: 'iarahub.auth.us-east-1.amazoncognito.com',
       scope: ['email', 'openid', 'phone'],
-      redirectSignIn: window.location.origin,
-      redirectSignOut: window.location.origin,
+      redirectSignIn: 'https://www.iarahub.com.br',
+      redirectSignOut: 'https://www.iarahub.com.br',
       responseType: 'code'
-    },
-    cookieStorage: {
-      domain: window.location.hostname,
-      path: '/',
-      expires: 365,
-      sameSite: "strict",
-      secure: true
     }
   }
 };
