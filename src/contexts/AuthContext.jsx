@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
 import { signOut, getCurrentUser } from '@aws-amplify/auth';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 
 const AuthContext = createContext(null);
@@ -8,6 +9,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     checkUser();
@@ -17,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await getCurrentUser();
       setUser(userData);
+      navigate('/dashboard');
     } catch (error) {
       setUser(null);
     } finally {
@@ -32,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await signOut();
       setUser(null);
+      navigate('/');
       toast.success("Logout realizado com sucesso!");
     } catch (error) {
       console.error('Error signing out:', error);
