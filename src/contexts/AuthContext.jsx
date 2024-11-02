@@ -1,60 +1,27 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
-import awsConfig from '../config/cognito';
-
-try {
-  const configWithoutOAuth = {
-    ...awsConfig,
-    oauth: undefined
-  };
-  Amplify.configure(configWithoutOAuth);
-} catch (error) {
-  console.error("Error configuring Amplify:", error);
-}
+import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  async function checkUser() {
+  async function login(email) {
     try {
-      const userData = await getCurrentUser();
-      setUser(userData);
-    } catch (err) {
-      console.error("Error checking user:", err);
-      setUser(null);
-    }
-    setLoading(false);
-  }
-
-  async function login(username) {
-    try {
-      const user = await signIn({ 
-        username, 
-        password: awsConfig.Auth.defaultPassword 
-      });
-      setUser(user);
-      return user;
+      setLoading(true);
+      // Simplified login - just set the user email
+      setUser({ email });
+      return { email };
     } catch (error) {
       console.error("Error signing in: ", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
   async function logout() {
-    try {
-      await signOut();
-      setUser(null);
-    } catch (error) {
-      console.error("Error signing out: ", error);
-    }
+    setUser(null);
   }
 
   const value = {
