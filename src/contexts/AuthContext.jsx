@@ -1,10 +1,15 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { signInWithRedirect, signOut, getCurrentUser } from 'aws-amplify/auth';
+import { signIn, signOut, getCurrentUser } from 'aws-amplify/auth';
 import awsConfig from '../config/cognito';
 
+// Configure Amplify with a try-catch block to handle potential errors
 try {
-  Amplify.configure(awsConfig);
+  const configWithoutOAuth = {
+    ...awsConfig,
+    oauth: undefined // Remove OAuth configuration
+  };
+  Amplify.configure(configWithoutOAuth);
 } catch (error) {
   console.error("Error configuring Amplify:", error);
 }
@@ -30,9 +35,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }
 
-  async function login() {
+  async function login(username, password) {
     try {
-      await signInWithRedirect();
+      const user = await signIn({ username, password });
+      setUser(user);
+      return user;
     } catch (error) {
       console.error("Error signing in: ", error);
       throw error;
