@@ -31,11 +31,12 @@ export const AuthProvider = ({ children }) => {
       if (isSignedIn) {
         const userData = await getCurrentUser();
         setUser(userData);
-        return userData;
+        return { success: true, user: userData };
       }
-      return nextStep;
+      return { success: false, nextStep };
     } catch (error) {
-      throw error;
+      console.error("Login error:", error);
+      return { success: false, error: error.message };
     }
   }
 

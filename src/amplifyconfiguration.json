@@ -1,9 +1,8 @@
 {
   "aws_project_region": "us-east-1",
-  "aws_cognito_identity_pool_id": "us-east-1:0cc63452-1343-445f-ac75-7cd8b05b4d05",
   "aws_cognito_region": "us-east-1",
-  "aws_user_pools_id": "us-east-1_duYM97Wmu",
-  "aws_user_pools_web_client_id": "po627tu7qatu642tpcqh9thos",
+  "aws_user_pools_id": "us-east-1_4aY0YgEiy",
+  "aws_user_pools_web_client_id": "5j5l279nm9o6mfss3dm2qrprb1",
   "oauth": {},
   "aws_cognito_username_attributes": [],
   "aws_cognito_social_providers": [],
