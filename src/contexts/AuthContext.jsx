@@ -1,29 +1,43 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { Amplify } from 'aws-amplify';
+import { signOut, getCurrentUser } from 'aws-amplify/auth';
+import awsConfig from '../config/cognito';
+
+Amplify.configure(awsConfig);
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const login = async () => {
-    setLoading(true);
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  async function checkUser() {
     try {
-      // Simplified login - just set a mock user
-      setUser({
-        email: 'user@example.com',
-        name: 'User'
-      });
-    } catch (error) {
-      console.error("Error signing in: ", error);
-    } finally {
-      setLoading(false);
+      const userData = await getCurrentUser();
+      setUser(userData);
+    } catch (err) {
+      console.log('No user signed in');
+      setUser(null);
     }
-  };
+    setLoading(false);
+  }
 
-  const logout = async () => {
-    setUser(null);
-  };
+  async function login() {
+    window.location.href = "https://iarahub.auth.us-east-1.amazoncognito.com/login?client_id=5j5l279nm9o6mfss3dm2qrprb1&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fwww.iarahub.com.br";
+  }
+
+  async function logout() {
+    try {
+      await signOut();
+      setUser(null);
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  }
 
   const value = {
     user,
