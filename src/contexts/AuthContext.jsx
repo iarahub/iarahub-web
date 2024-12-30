@@ -18,14 +18,13 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
     } catch (error) {
       setUser(null);
-      window.location.href = 'https://iarahub.auth.us-east-1.amazoncognito.com/login?client_id=6cngethoqj384g4qel80h99kgt&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fwww.iarahub.com.br%2Fdashboard';
     } finally {
       setLoading(false);
     }
   }
 
   async function login() {
-    window.location.href = 'https://iarahub.auth.us-east-1.amazoncognito.com/login?client_id=6cngethoqj384g4qel80h99kgt&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fwww.iarahub.com.br%2Fdashboard';
+    window.location.href = 'https://iarahub.auth.us-east-1.amazoncognito.com/login?client_id=5j5l279nm9o6mfss3dm2qrprb1&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fwww.iarahub.com.br';
   }
 
   async function logout() {
