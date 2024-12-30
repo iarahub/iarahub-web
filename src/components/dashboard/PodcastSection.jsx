@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "../ui/card";
 import { Headphones, PlayCircle, PauseCircle } from 'lucide-react';
 import YouTube from 'react-youtube';
@@ -9,6 +9,7 @@ const PodcastSection = () => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [player, setPlayer] = useState(null);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const podcasts = [
     {
@@ -33,25 +34,43 @@ const PodcastSection = () => {
     },
   };
 
+  useEffect(() => {
+    // Cleanup function to stop player and clear interval when component unmounts
+    return () => {
+      if (player) {
+        player.stopVideo();
+      }
+      clearProgressInterval();
+    };
+  }, [player]);
+
   const handlePlayerReady = (event, podcast) => {
     console.log('YouTube Player ready:', event);
-    setPlayer(event.target);
-    setDuration(event.target.getDuration());
+    const newPlayer = event.target;
+    setPlayer(newPlayer);
+    setDuration(newPlayer.getDuration());
+    setIsPlayerReady(true);
     
+    // If this is the current podcast and should be playing, start playback
     if (currentPodcast?.id === podcast.id && isPlaying) {
       setTimeout(() => {
-        event.target.playVideo();
-      }, 100);
+        try {
+          newPlayer.playVideo();
+        } catch (error) {
+          console.error('Error playing video:', error);
+          setIsPlaying(false);
+        }
+      }, 1000); // Give more time for player initialization
     }
   };
 
   const handlePlayerStateChange = (event) => {
     console.log('Player state changed:', event);
-    const player = event.target;
+    if (!event.target) return;
     
     if (event.data === YouTube.PlayerState.PLAYING) {
       setIsPlaying(true);
-      startProgressInterval(player);
+      startProgressInterval(event.target);
     } else {
       setIsPlaying(false);
       clearProgressInterval();
@@ -59,14 +78,20 @@ const PodcastSection = () => {
   };
 
   const startProgressInterval = (player) => {
+    if (!player) return;
     clearProgressInterval();
     
     const intervalId = setInterval(() => {
       if (player && typeof player.getCurrentTime === 'function') {
-        const currentTime = player.getCurrentTime();
-        const duration = player.getDuration();
-        const progressPercent = (currentTime / duration) * 100;
-        setProgress(progressPercent);
+        try {
+          const currentTime = player.getCurrentTime();
+          const duration = player.getDuration();
+          const progressPercent = (currentTime / duration) * 100;
+          setProgress(progressPercent);
+        } catch (error) {
+          console.error('Error updating progress:', error);
+          clearProgressInterval();
+        }
       }
     }, 1000);
 
@@ -81,19 +106,31 @@ const PodcastSection = () => {
   };
 
   const togglePlayPause = (podcast) => {
-    if (currentPodcast?.id === podcast.id) {
-      if (isPlaying && player) {
-        player.pauseVideo();
-      } else if (player) {
-        player.playVideo();
+    if (!isPlayerReady || !player) {
+      console.log('Player not ready yet');
+      return;
+    }
+
+    try {
+      if (currentPodcast?.id === podcast.id) {
+        if (isPlaying) {
+          player.pauseVideo();
+        } else {
+          player.playVideo();
+        }
+        setIsPlaying(!isPlaying);
+      } else {
+        // Switching to a new podcast
+        if (player) {
+          player.stopVideo();
+        }
+        setCurrentPodcast(podcast);
+        setIsPlaying(true);
+        // The actual playback will be handled in handlePlayerReady
       }
-      setIsPlaying(!isPlaying);
-    } else {
-      if (player) {
-        player.stopVideo();
-      }
-      setCurrentPodcast(podcast);
-      setIsPlaying(true);
+    } catch (error) {
+      console.error('Error toggling play/pause:', error);
+      setIsPlaying(false);
     }
   };
 
@@ -119,6 +156,7 @@ const PodcastSection = () => {
                   <button
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                     onClick={() => togglePlayPause(podcast)}
+                    disabled={!isPlayerReady}
                   >
                     {currentPodcast?.id === podcast.id && isPlaying ? (
                       <PauseCircle className="h-6 w-6 text-primary" />
