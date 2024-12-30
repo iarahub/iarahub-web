@@ -6,26 +6,33 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Lista de usuários permitidos
-  const allowedUsers = [
-    { email: 'marina.santiago@nttdata.com', name: 'Marina Santiago' },
-    { email: 'admin@nttdata.com', name: 'Admin' }
-  ];
+  const [token, setToken] = useState(null);
 
   async function login(email, password) {
     setLoading(true);
     try {
-      const user = allowedUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-      
-      if (user) {
-        setUser(user);
-        toast.success("Login realizado com sucesso!");
-        return user;
-      } else {
-        toast.error("Usuário não encontrado.");
-        throw new Error("Usuário não encontrado");
+      const response = await fetch('https://bff-iarahub.vercel.app/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao realizar login');
       }
+
+      setUser(data.user);
+      setToken(data.token);
+      toast.success(data.message || "Login realizado com sucesso!");
+      return data.user;
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error(error.message || "Falha ao realizar login");
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -33,11 +40,13 @@ export const AuthProvider = ({ children }) => {
 
   async function logout() {
     setUser(null);
+    setToken(null);
     toast.success("Logout realizado com sucesso!");
   }
 
   const value = {
     user,
+    token,
     login,
     logout,
     loading

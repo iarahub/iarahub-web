@@ -13,16 +13,16 @@ const Index = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (email.trim() !== '') {
-      try {
-        await login(email, password);
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('Error during login:', error);
-        toast.error("Falha no login. Por favor, verifique suas credenciais.");
-      }
-    } else {
-      toast.error("Por favor, preencha o email.");
+    if (!email.trim() || !password.trim()) {
+      toast.error("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error during login:', error);
     }
   };
 
@@ -41,18 +41,18 @@ const Index = () => {
             </div>
             <div className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">email:</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="marina.santiago@nttdata.com"
+                  placeholder="seu.email@iarahub.com.br"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="mt-1"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">senha:</label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Senha:</label>
                 <Input
                   id="password"
                   type="password"
