@@ -2,12 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
 
-const Register = () => {
+// Create a client
+const queryClient = new QueryClient();
+
+const RegisterForm = () => {
   const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
@@ -192,6 +196,15 @@ const Register = () => {
         </Form>
       </div>
     </div>
+  );
+};
+
+// Wrap the RegisterForm with QueryClientProvider
+const Register = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RegisterForm />
+    </QueryClientProvider>
   );
 };
 
