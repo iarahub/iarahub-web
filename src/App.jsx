@@ -12,6 +12,7 @@ import IaraTech from "./pages/IaraTech";
 import IuclickTracker from "./pages/IuclickTracker";
 import Onboarding from "./pages/Onboarding";
 import Podcast from "./pages/Podcast";
+import PracticeExam from "./pages/PracticeExam";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,11 @@ const App = () => {
                 <Route path="/podcast" element={
                   <ProtectedRoute>
                     <Podcast />
+                  </ProtectedRoute>
+                } />
+                <Route path="/practice-exam" element={
+                  <ProtectedRoute>
+                    <PracticeExam />
                   </ProtectedRoute>
                 } />
               </Routes>
