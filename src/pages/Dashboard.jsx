@@ -2,10 +2,11 @@ import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
-import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Headphones, FileText, BeakerIcon, Users } from 'lucide-react';
+import { GraduationCap, UserIcon, ClockIcon, BrainIcon, Headphones, FileText, BeakerIcon, Users, PlayCircle } from 'lucide-react';
 import { ExamCalendar } from '../components/ExamCalendar';
 import CertifiedPeople from '../components/CertifiedPeople';
 import { useNavigate } from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -34,6 +35,29 @@ const Dashboard = () => {
     "AWS Developer Associate",
     "AWS SysOps Administrator Associate"
   ];
+
+  const podcasts = [
+    {
+      id: '1',
+      title: 'Introdução ao AWS Cloud Practitioner',
+      youtubeId: 'dQw4w9WgXcQ', // Replace with actual YouTube video ID
+      duration: '45:30'
+    },
+    {
+      id: '2',
+      title: 'Serviços Essenciais da AWS',
+      youtubeId: 'dQw4w9WgXcQ', // Replace with actual YouTube video ID
+      duration: '38:15'
+    }
+  ];
+
+  const opts = {
+    height: '0',
+    width: '0',
+    playerVars: {
+      autoplay: 0,
+    },
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -121,6 +145,47 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4">Digital Lover's Certificados</h2>
                 <CertifiedPeople />
+              </CardContent>
+            </Card>
+
+            {/* Podcast Section */}
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4 flex items-center">
+                  <Headphones className="mr-2 h-6 w-6 text-primary" />
+                  PodCasts AWS
+                </h2>
+                <div className="space-y-4">
+                  {podcasts.map((podcast) => (
+                    <div
+                      key={podcast.id}
+                      className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900">{podcast.title}</h3>
+                          <p className="text-sm text-gray-500">{podcast.duration}</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            onClick={() => console.log('Play/Pause podcast:', podcast.id)}
+                          >
+                            <PlayCircle className="h-6 w-6 text-primary" />
+                          </button>
+                        </div>
+                      </div>
+                      <YouTube
+                        videoId={podcast.youtubeId}
+                        opts={opts}
+                        onReady={(event) => {
+                          console.log('YouTube Player ready:', event);
+                        }}
+                        className="hidden"
+                      />
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
