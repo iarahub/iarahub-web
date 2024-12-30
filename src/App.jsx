@@ -11,6 +11,7 @@ import AwsAcademy from "./pages/AwsAcademy";
 import IaraTech from "./pages/IaraTech";
 import IuclickTracker from "./pages/IuclickTracker";
 import Onboarding from "./pages/Onboarding";
+import Podcast from "./pages/Podcast";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,11 @@ const App = () => {
                 <Route path="/onboarding" element={
                   <ProtectedRoute>
                     <Onboarding />
+                  </ProtectedRoute>
+                } />
+                <Route path="/podcast" element={
+                  <ProtectedRoute>
+                    <Podcast />
                   </ProtectedRoute>
                 } />
               </Routes>
