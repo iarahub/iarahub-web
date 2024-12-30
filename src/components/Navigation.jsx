@@ -18,7 +18,7 @@ const Navigation = ({ onLogout }) => {
                 <NavLink to="/certifications" icon={<AwardIcon />}>Certificações</NavLink>
                 <NavLink to="/labs" icon={<BeakerIcon />}>Laboratórios</NavLink>
                 <NavLink to="/tutors" icon={<UserIcon />}>Tutores</NavLink>
-                <NavLink to="/practice-exams" icon={<FileTextIcon />}>Simulados</NavLink>
+                <NavLink to="/practice-exam" icon={<FileTextIcon />}>Simulados</NavLink>
               </div>
             </div>
           </div>

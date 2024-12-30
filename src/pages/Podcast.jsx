@@ -9,6 +9,7 @@ const Podcast = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [player, setPlayer] = useState(null);
 
   const podcasts = [
     {
@@ -37,9 +38,14 @@ const Podcast = () => {
 
   const handlePlayerReady = (event, podcast) => {
     console.log('YouTube Player ready:', event);
+    setPlayer(event.target);
     setDuration(event.target.getDuration());
-    if (currentPodcast?.id === podcast.id) {
-      event.target.playVideo();
+    
+    // Only start playing if this is the current podcast
+    if (currentPodcast?.id === podcast.id && isPlaying) {
+      setTimeout(() => {
+        event.target.playVideo();
+      }, 100);
     }
   };
 
@@ -57,11 +63,15 @@ const Podcast = () => {
   };
 
   const startProgressInterval = (player) => {
+    clearProgressInterval(); // Clear any existing interval first
+    
     const intervalId = setInterval(() => {
-      const currentTime = player.getCurrentTime();
-      const duration = player.getDuration();
-      const progressPercent = (currentTime / duration) * 100;
-      setProgress(progressPercent);
+      if (player && typeof player.getCurrentTime === 'function') {
+        const currentTime = player.getCurrentTime();
+        const duration = player.getDuration();
+        const progressPercent = (currentTime / duration) * 100;
+        setProgress(progressPercent);
+      }
     }, 1000);
 
     window._podcastInterval = intervalId;
@@ -70,15 +80,22 @@ const Podcast = () => {
   const clearProgressInterval = () => {
     if (window._podcastInterval) {
       clearInterval(window._podcastInterval);
+      window._podcastInterval = null;
     }
   };
 
   const togglePlayPause = (podcast) => {
     if (currentPodcast?.id === podcast.id) {
-      setCurrentPodcast(null);
-      setIsPlaying(false);
-      clearProgressInterval();
+      if (isPlaying && player) {
+        player.pauseVideo();
+      } else if (player) {
+        player.playVideo();
+      }
+      setIsPlaying(!isPlaying);
     } else {
+      if (player) {
+        player.stopVideo();
+      }
       setCurrentPodcast(podcast);
       setIsPlaying(true);
     }

@@ -1,182 +1,204 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { useNavigate } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
+import { Label } from "../components/ui/label";
+import { toast } from "sonner";
 
 const PracticeExam = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [showResults, setShowResults] = useState(false);
-  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [examStarted, setExamStarted] = useState(false);
+  
+  const exams = [
+    {
+      name: "AWS Cloud Practitioner",
+      description: "Simulado para a certificação AWS Cloud Practitioner",
+      questions: 65,
+      duration: "90 minutos",
+      level: "Iniciante",
+      prompt: "Gere 5 questões de múltipla escolha sobre AWS Cloud Practitioner, focando em conceitos básicos de cloud computing, serviços fundamentais da AWS, segurança e preços. Formate as questões com: pergunta, 4 alternativas (a, b, c, d) e a resposta correta."
+    },
+    {
+      name: "AWS Solutions Architect Associate",
+      description: "Simulado para a certificação AWS Solutions Architect Associate",
+      questions: 65,
+      duration: "130 minutos",
+      level: "Intermediário",
+      prompt: "Gere 5 questões de múltipla escolha sobre AWS Solutions Architect Associate, focando em arquitetura de soluções, alta disponibilidade, disaster recovery e otimização de custos. Formate as questões com: pergunta, 4 alternativas (a, b, c, d) e a resposta correta."
+    }
+  ];
 
-  const { data: questions, isLoading, error } = useQuery({
-    queryKey: ['practice-exam'],
-    queryFn: async () => {
-      const prompt = `Generate 5 multiple choice questions for AWS Cloud Practitioner certification. 
-                     Each question should have 4 options (A, B, C, D) and include the correct answer. 
-                     Format as JSON array with fields: question, options (array), correctAnswer (index 0-3)`;
-      
+  const fetchQuestions = async (examPrompt) => {
+    setIsLoading(true);
+    try {
+      console.log("Fetching questions with prompt:", examPrompt);
       const response = await fetch('https://bff-iarahub.vercel.app/api/groq', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'prompt': prompt
-        }
+        },
+        body: JSON.stringify({
+          prompt: examPrompt
+        })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch questions');
+        throw new Error('Falha ao carregar as questões');
       }
 
       const data = await response.json();
-      return JSON.parse(data.response);
+      console.log("Received questions:", data);
+      setQuestions(parseQuestions(data.message));
+      setExamStarted(true);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      toast.error("Erro ao carregar as questões. Por favor, tente novamente.");
+    } finally {
+      setIsLoading(false);
     }
-  });
+  };
 
-  const handleAnswerSelect = (value) => {
+  const parseQuestions = (rawText) => {
+    // Simple parser for the API response
+    const questionBlocks = rawText.split(/\d+\.\s+/).filter(Boolean);
+    return questionBlocks.map(block => {
+      const lines = block.split('\n').filter(Boolean);
+      const question = lines[0].trim();
+      const options = lines.slice(1, 5).map(line => line.trim());
+      const correctAnswer = lines[5]?.replace(/Resposta correta:\s*/, '').trim() || 'a';
+      
+      return {
+        question,
+        options,
+        correctAnswer
+      };
+    });
+  };
+
+  const handleStartExam = (exam) => {
+    console.log("Starting exam:", exam.name);
+    fetchQuestions(exam.prompt);
+  };
+
+  const handleAnswerSelect = (answer) => {
     setAnswers(prev => ({
       ...prev,
-      [currentQuestion]: parseInt(value)
+      [currentQuestionIndex]: answer
     }));
   };
 
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
     }
   };
 
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(prev => prev - 1);
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
     }
   };
 
-  const calculateResults = async () => {
-    const totalQuestions = questions.length;
-    const correctAnswers = questions.reduce((acc, question, index) => {
-      return acc + (question.correctAnswer === answers[index] ? 1 : 0);
-    }, 0);
-    const percentage = (correctAnswers / totalQuestions) * 100;
-
-    // Get AI feedback based on performance
-    const feedbackPrompt = `The user got ${correctAnswers} correct answers out of ${totalQuestions} questions (${percentage.toFixed(1)}%) 
-                          on the AWS Cloud Practitioner practice exam. Provide a brief, encouraging feedback message about their performance 
-                          and suggest what to focus on next.`;
-
-    try {
-      const response = await fetch('https://bff-iarahub.vercel.app/api/groq', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'prompt': feedbackPrompt
-        }
-      });
-
-      const data = await response.json();
-      const feedback = data.response;
-
-      toast({
-        title: "Exam Results",
-        description: `Score: ${percentage.toFixed(1)}%\n${feedback}`,
-        duration: 10000,
-      });
-    } catch (error) {
-      console.error('Error getting feedback:', error);
-    }
-
-    setShowResults(true);
-  };
-
-  if (isLoading) {
+  if (!examStarted) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8">
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="p-6">
-            <p className="text-red-500">Error loading questions. Please try again later.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (!questions) return null;
-
-  const currentQuestionData = questions[currentQuestion];
-
-  return (
-    <div className="p-8">
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>
-            Practice Exam - Question {currentQuestion + 1} of {questions.length}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="space-y-6">
-            <p className="text-lg font-medium">{currentQuestionData.question}</p>
-            
-            <RadioGroup
-              value={answers[currentQuestion]?.toString()}
-              onValueChange={handleAnswerSelect}
-              className="space-y-4"
-            >
-              {currentQuestionData.options.map((option, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <RadioGroupItem
-                    value={index.toString()}
-                    id={`option-${index}`}
-                    disabled={showResults}
-                  />
-                  <Label htmlFor={`option-${index}`} className="text-base">
-                    {option}
-                  </Label>
-                  {showResults && index === currentQuestionData.correctAnswer && (
-                    <span className="text-green-500 ml-2">(Correct Answer)</span>
-                  )}
-                </div>
+      <div>
+        <Navigation />
+        <div className="container mx-auto p-8">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8">Simulados de Certificação AWS</h1>
+            <div className="grid gap-6">
+              {exams.map((exam, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-xl">{exam.name}</CardTitle>
+                    <CardDescription>{exam.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
+                      <div>
+                        <p className="text-gray-500">Questões</p>
+                        <p className="font-medium">{exam.questions}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Duração</p>
+                        <p className="font-medium">{exam.duration}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Nível</p>
+                        <p className="font-medium">{exam.level}</p>
+                      </div>
+                    </div>
+                    <Button 
+                      className="w-full"
+                      onClick={() => handleStartExam(exam)}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Carregando..." : "Iniciar Simulado"}
+                    </Button>
+                  </CardContent>
+                </Card>
               ))}
-            </RadioGroup>
-
-            <div className="flex justify-between mt-6">
-              <Button
-                onClick={handlePrevious}
-                disabled={currentQuestion === 0}
-              >
-                Previous
-              </Button>
-              
-              {currentQuestion === questions.length - 1 ? (
-                <Button
-                  onClick={calculateResults}
-                  disabled={showResults || Object.keys(answers).length !== questions.length}
-                >
-                  Submit
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleNext}
-                  disabled={answers[currentQuestion] === undefined}
-                >
-                  Next
-                </Button>
-              )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  return (
+    <div>
+      <Navigation />
+      <div className="container mx-auto p-8">
+        <div className="max-w-3xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>Questão {currentQuestionIndex + 1} de {questions.length}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <p className="text-lg font-medium">{currentQuestion?.question}</p>
+                
+                <RadioGroup
+                  value={answers[currentQuestionIndex] || ""}
+                  onValueChange={handleAnswerSelect}
+                  className="space-y-3"
+                >
+                  {currentQuestion?.options.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <RadioGroupItem value={String.fromCharCode(97 + index)} id={`option-${index}`} />
+                      <Label htmlFor={`option-${index}`}>{option}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+
+                <div className="flex justify-between mt-6">
+                  <Button
+                    onClick={handlePreviousQuestion}
+                    disabled={currentQuestionIndex === 0}
+                    variant="outline"
+                  >
+                    Anterior
+                  </Button>
+                  <Button
+                    onClick={handleNextQuestion}
+                    disabled={currentQuestionIndex === questions.length - 1}
+                  >
+                    Próxima
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
