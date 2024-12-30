@@ -11,8 +11,18 @@ import AwsAcademy from "./pages/AwsAcademy";
 import IaraTech from "./pages/IaraTech";
 import IuclickTracker from "./pages/IuclickTracker";
 import Onboarding from "./pages/Onboarding";
+import Podcast from "./pages/Podcast";
+import PracticeExam from "./pages/PracticeExam";
 
-const queryClient = new QueryClient();
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -28,7 +38,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-const App = () => {
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -64,6 +74,16 @@ const App = () => {
                     <Onboarding />
                   </ProtectedRoute>
                 } />
+                <Route path="/podcast" element={
+                  <ProtectedRoute>
+                    <Podcast />
+                  </ProtectedRoute>
+                } />
+                <Route path="/practice-exam" element={
+                  <ProtectedRoute>
+                    <PracticeExam />
+                  </ProtectedRoute>
+                } />
               </Routes>
             </div>
           </BrowserRouter>
@@ -71,6 +91,6 @@ const App = () => {
       </AuthProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;
