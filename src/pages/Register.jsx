@@ -14,6 +14,7 @@ const Register = () => {
       name: "",
       email: "",
       password: "",
+      role: "",
       enterprise: "",
       language: "PTBR"
     }
@@ -112,6 +113,51 @@ const Register = () => {
                       <SelectItem value="NTTDATA">NTTDATA</SelectItem>
                       <SelectItem value="ITAU">Itaú</SelectItem>
                       <SelectItem value="ZUP">ZUP</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Função</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione sua função" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Administrador">Administrador</SelectItem>
+                      <SelectItem value="Usuario">Usuário</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Idioma</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione seu idioma" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PTBR">Português (BR)</SelectItem>
+                      <SelectItem value="EN">English</SelectItem>
+                      <SelectItem value="ES">Español</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
