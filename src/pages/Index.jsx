@@ -30,15 +30,16 @@ const Index = () => {
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md">
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="bg-blue-600 p-4 flex items-center">
-            <img src="/logo.png" alt="iaraHub.IA" className="h-8 mr-2" />
-            <h1 className="text-white text-xl font-bold">iaraHub.IA</h1>
+          <div className="p-6 flex flex-col items-center">
+            <img 
+              src="/lovable-uploads/007fb876-ab66-430e-9e3c-f32df93159fd.png" 
+              alt="iaraHub.IA" 
+              className="h-24 w-24 mb-6" 
+            />
+            <h2 className="text-xl font-semibold text-gray-700 mb-2">Bem vindo Digital Lover's</h2>
+            <img src="/nttdata-logo.png" alt="NTTDATA" className="h-6 mb-6" />
           </div>
-          <form onSubmit={handleLogin} className="p-6">
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-700">Bem vindo Digital Lover's</h2>
-              <img src="/nttdata-logo.png" alt="NTTDATA" className="h-6 mx-auto mt-2" />
-            </div>
+          <form onSubmit={handleLogin} className="p-6 pt-0">
             <div className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
