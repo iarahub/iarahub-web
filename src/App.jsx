@@ -14,7 +14,6 @@ import Onboarding from "./pages/Onboarding";
 import Podcast from "./pages/Podcast";
 import PracticeExam from "./pages/PracticeExam";
 
-// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -40,56 +39,58 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <BrowserRouter>
-            <div className="min-h-screen bg-gray-100">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
-                <Route path="/aws-academy" element={
-                  <ProtectedRoute>
-                    <AwsAcademy />
-                  </ProtectedRoute>
-                } />
-                <Route path="/iara-tech" element={
-                  <ProtectedRoute>
-                    <IaraTech />
-                  </ProtectedRoute>
-                } />
-                <Route path="/iuclick-tracker" element={
-                  <ProtectedRoute>
-                    <IuclickTracker />
-                  </ProtectedRoute>
-                } />
-                <Route path="/onboarding" element={
-                  <ProtectedRoute>
-                    <Onboarding />
-                  </ProtectedRoute>
-                } />
-                <Route path="/podcast" element={
-                  <ProtectedRoute>
-                    <Podcast />
-                  </ProtectedRoute>
-                } />
-                <Route path="/practice-exam" element={
-                  <ProtectedRoute>
-                    <PracticeExam />
-                  </ProtectedRoute>
-                } />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <div className="min-h-screen bg-gray-100">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/aws-academy" element={
+                    <ProtectedRoute>
+                      <AwsAcademy />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/iara-tech" element={
+                    <ProtectedRoute>
+                      <IaraTech />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/iuclick-tracker" element={
+                    <ProtectedRoute>
+                      <IuclickTracker />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/onboarding" element={
+                    <ProtectedRoute>
+                      <Onboarding />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/podcast" element={
+                    <ProtectedRoute>
+                      <Podcast />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/practice-exam" element={
+                    <ProtectedRoute>
+                      <PracticeExam />
+                    </ProtectedRoute>
+                  } />
+                </Routes>
+              </div>
+            </TooltipProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </React.StrictMode>
   );
 }
 
