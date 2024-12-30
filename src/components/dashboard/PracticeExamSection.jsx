@@ -56,7 +56,7 @@ const PracticeExamSection = () => {
                 </div>
                 <Button 
                   className="w-full mt-2"
-                  onClick={() => navigate(`/practice-exam/${exam.name.toLowerCase().replace(/\s+/g, '-')}`)}
+                  onClick={() => navigate('/practice-exam')}
                 >
                   Iniciar Simulado
                 </Button>

@@ -84,6 +84,11 @@ function App() {
                       <PracticeExam />
                     </ProtectedRoute>
                   } />
+                  <Route path="/practice-exam/:examId" element={
+                    <ProtectedRoute>
+                      <PracticeExam />
+                    </ProtectedRoute>
+                  } />
                 </Routes>
               </div>
             </TooltipProvider>
