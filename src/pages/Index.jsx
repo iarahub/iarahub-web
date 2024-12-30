@@ -66,6 +66,16 @@ const Index = () => {
             <Button type="submit" className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
               Acessar
             </Button>
+            <div className="text-center mt-4">
+              <Button
+                type="button"
+                variant="link"
+                onClick={() => navigate("/register")}
+                className="text-sm text-blue-600 hover:text-blue-800"
+              >
+                Não tem uma conta? Registre-se
+              </Button>
+            </div>
           </form>
         </div>
       </div>

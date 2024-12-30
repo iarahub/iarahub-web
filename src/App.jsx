@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Index from "./pages/Index";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AwsAcademy from "./pages/AwsAcademy";
 import IaraTech from "./pages/IaraTech";
@@ -36,6 +37,7 @@ const App = () => {
             <div className="min-h-screen bg-gray-100">
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <Dashboard />
