@@ -1,27 +1,23 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from "./ui/calendar";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-const ExamCalendar = ({ examDate }) => {
+export const ExamCalendar = ({ examDate }) => {
   return (
-    <Card className="w-full max-w-sm mx-auto">
-      <CardHeader>
-        <CardTitle>Data da Prova</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Calendar
-          mode="single"
-          selected={examDate}
-          className="rounded-md border w-full"
-        />
-        {examDate && (
-          <p className="mt-2 text-center">
-            Sua prova está marcada para: {examDate.toLocaleDateString()}
-          </p>
-        )}
-      </CardContent>
-    </Card>
+    <div className="space-y-4">
+      <Calendar
+        mode="single"
+        selected={examDate}
+        locale={ptBR}
+        className="rounded-md border"
+        disabled={(date) => date < new Date()}
+      />
+      {examDate && (
+        <p className="text-center text-sm text-gray-600">
+          Sua prova está marcada para: {format(examDate, "dd/MM/yyyy")}
+        </p>
+      )}
+    </div>
   );
 };
-
-export default ExamCalendar;
