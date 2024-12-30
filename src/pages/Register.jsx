@@ -14,8 +14,7 @@ const Register = () => {
       name: "",
       email: "",
       password: "",
-      role: "",
-      enterprise: "NTTDATA",
+      enterprise: "",
       language: "PTBR"
     }
   });
@@ -75,7 +74,7 @@ const Register = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="seu.email@nttdata.com" {...field} />
+                    <Input type="email" placeholder="seu.email@empresa.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,19 +97,21 @@ const Register = () => {
 
             <FormField
               control={form.control}
-              name="role"
+              name="enterprise"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Função</FormLabel>
+                  <FormLabel>Empresa</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecione sua função" />
+                        <SelectValue placeholder="Selecione sua empresa" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Administrador">Administrador</SelectItem>
-                      <SelectItem value="Usuario">Usuário</SelectItem>
+                      <SelectItem value="IARA">IARA</SelectItem>
+                      <SelectItem value="NTTDATA">NTTDATA</SelectItem>
+                      <SelectItem value="ITAU">Itaú</SelectItem>
+                      <SelectItem value="ZUP">ZUP</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -118,7 +119,16 @@ const Register = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button 
+              type="submit" 
+              className={`w-full ${
+                form.watch("enterprise") === "IARA" ? "bg-purple-600 hover:bg-purple-700" :
+                form.watch("enterprise") === "ITAU" ? "bg-orange-500 hover:bg-orange-600" :
+                form.watch("enterprise") === "NTTDATA" ? "bg-blue-600 hover:bg-blue-700" :
+                form.watch("enterprise") === "ZUP" ? "bg-green-600 hover:bg-green-700" :
+                "bg-primary hover:bg-primary-dark"
+              }`}
+            >
               Registrar
             </Button>
 

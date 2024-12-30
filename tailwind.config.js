@@ -24,12 +24,12 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#0067C0", // NTT DATA blue
-          dark: "#005299", // Darker shade for hover
+          DEFAULT: "#0067C0",
+          dark: "#005299",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#4CC3FF", // Lighter blue for accents
+          DEFAULT: "#4CC3FF",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -51,6 +51,23 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        // Company theme colors
+        iara: {
+          DEFAULT: "#9b87f5",
+          dark: "#7E69AB",
+        },
+        itau: {
+          DEFAULT: "#F97316",
+          dark: "#EA580C",
+        },
+        nttdata: {
+          DEFAULT: "#0EA5E9",
+          dark: "#0284C7",
+        },
+        zup: {
+          DEFAULT: "#22C55E",
+          dark: "#16A34A",
         },
       },
       borderRadius: {
