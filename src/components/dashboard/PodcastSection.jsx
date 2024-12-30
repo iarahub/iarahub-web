@@ -37,15 +37,25 @@ const PodcastSection = () => {
   useEffect(() => {
     // Cleanup function to stop player and clear interval when component unmounts
     return () => {
-      if (player) {
-        player.stopVideo();
+      try {
+        clearProgressInterval();
+        if (player && player.getPlayerState && typeof player.stopVideo === 'function') {
+          console.log('Stopping player during cleanup');
+          player.stopVideo();
+        }
+      } catch (error) {
+        console.error('Error during cleanup:', error);
       }
-      clearProgressInterval();
     };
   }, [player]);
 
   const handlePlayerReady = (event, podcast) => {
     console.log('YouTube Player ready:', event);
+    if (!event.target) {
+      console.error('Player target is null');
+      return;
+    }
+
     const newPlayer = event.target;
     setPlayer(newPlayer);
     setDuration(newPlayer.getDuration());
@@ -55,12 +65,14 @@ const PodcastSection = () => {
     if (currentPodcast?.id === podcast.id && isPlaying) {
       setTimeout(() => {
         try {
-          newPlayer.playVideo();
+          if (newPlayer && typeof newPlayer.playVideo === 'function') {
+            newPlayer.playVideo();
+          }
         } catch (error) {
           console.error('Error playing video:', error);
           setIsPlaying(false);
         }
-      }, 1000); // Give more time for player initialization
+      }, 1000);
     }
   };
 
@@ -113,15 +125,15 @@ const PodcastSection = () => {
 
     try {
       if (currentPodcast?.id === podcast.id) {
-        if (isPlaying) {
+        if (isPlaying && typeof player.pauseVideo === 'function') {
           player.pauseVideo();
-        } else {
+        } else if (typeof player.playVideo === 'function') {
           player.playVideo();
         }
         setIsPlaying(!isPlaying);
       } else {
         // Switching to a new podcast
-        if (player) {
+        if (player && typeof player.stopVideo === 'function') {
           player.stopVideo();
         }
         setCurrentPodcast(podcast);
