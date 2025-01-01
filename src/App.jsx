@@ -4,6 +4,7 @@ import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Navigation from "./components/Navigation";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -13,6 +14,7 @@ import IuclickTracker from "./pages/IuclickTracker";
 import Onboarding from "./pages/Onboarding";
 import Podcast from "./pages/Podcast";
 import PracticeExam from "./pages/PracticeExam";
+import KnowledgeBase from "./pages/KnowledgeBase";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +40,8 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const { user } = useAuth();
+
   return (
     <React.StrictMode>
       <BrowserRouter>
@@ -46,12 +50,18 @@ function App() {
             <TooltipProvider>
               <Toaster />
               <div className="min-h-screen bg-gray-100">
+                {user && <Navigation onLogout={() => {/* handle logout */}} />}
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/dashboard" element={
                     <ProtectedRoute>
                       <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/knowledge-base" element={
+                    <ProtectedRoute>
+                      <KnowledgeBase />
                     </ProtectedRoute>
                   } />
                   <Route path="/aws-academy" element={
