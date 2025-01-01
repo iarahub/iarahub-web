@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "../ui/card";
 import { Headphones, PlayCircle, PauseCircle } from 'lucide-react';
 import YouTube from 'react-youtube';
+import { Slider } from "../ui/slider";
 
 const PodcastSection = () => {
   const [podcasts, setPodcasts] = useState([]);
@@ -10,9 +11,9 @@ const PodcastSection = () => {
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    // Busca os podcasts da API
     const fetchPodcasts = async () => {
       try {
         const response = await fetch('https://bff-iarahub.vercel.app/api/podcast/getAllPodcast');
@@ -30,9 +31,8 @@ const PodcastSection = () => {
   }, []);
 
   useEffect(() => {
-    // Atualiza o tempo atual do áudio enquanto está tocando
     const interval = setInterval(() => {
-      if (isPlaying && player) {
+      if (isPlaying && player && !isDragging) {
         const time = player.getCurrentTime();
         setCurrentTime(time);
         setDuration(player.getDuration());
@@ -40,7 +40,7 @@ const PodcastSection = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPlaying, player]);
+  }, [isPlaying, player, isDragging]);
 
   const handlePlayerReady = (event) => {
     setPlayer(event.target);
@@ -63,10 +63,23 @@ const PodcastSection = () => {
     }
   };
 
+  const handleSliderChange = (value) => {
+    if (player) {
+      const newTime = (value[0] / 100) * duration;
+      setCurrentTime(newTime);
+      player.seekTo(newTime);
+    }
+  };
+
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+  const getCurrentProgress = () => {
+    if (duration === 0) return 0;
+    return (currentTime / duration) * 100;
   };
 
   const opts = {
@@ -94,11 +107,6 @@ const PodcastSection = () => {
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-900">{podcast.title}</h3>
                   <p className="text-sm text-gray-500">{podcast.description}</p>
-                  {currentPodcast?.id === podcast.id && (
-                    <p className="text-sm text-gray-500">
-                      {formatTime(currentTime)} / {formatTime(duration)}
-                    </p>
-                  )}
                 </div>
                 <button
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -112,48 +120,38 @@ const PodcastSection = () => {
                 </button>
               </div>
               {currentPodcast?.id === podcast.id && (
-                <>
+                <div className="mt-4 space-y-2">
                   <YouTube
                     videoId={podcast.audioUrl.split('v=')[1]}
                     opts={opts}
                     onReady={handlePlayerReady}
                     className="hidden"
                   />
-                  {/* Onda de barras enquanto o áudio está tocando */}
-                  {isPlaying && (
-                    <div className="flex space-x-1 mt-4 justify-center">
-                      {Array(8) // Número de barras
-                        .fill(0)
-                        .map((_, index) => (
-                          <div
-                            key={index}
-                            className="w-2 bg-primary rounded"
-                            style={{
-                              animation: `pulse ${0.6 + index * 0.1}s infinite ease-in-out`,
-                              height: `${Math.random() * 30 + 10}px`, // Altura inicial aleatória
-                            }}
-                          />
-                        ))}
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-500 w-12">
+                      {formatTime(currentTime)}
+                    </span>
+                    <div className="flex-1">
+                      <Slider
+                        value={[getCurrentProgress()]}
+                        onValueChange={handleSliderChange}
+                        onValueCommit={() => setIsDragging(false)}
+                        onPointerDown={() => setIsDragging(true)}
+                        max={100}
+                        step={0.1}
+                        className="cursor-pointer"
+                      />
                     </div>
-                  )}
-                </>
+                    <span className="text-sm text-gray-500 w-12">
+                      {formatTime(duration)}
+                    </span>
+                  </div>
+                </div>
               )}
             </div>
           ))}
         </div>
       </CardContent>
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% {
-            transform: scaleY(0.3);
-            opacity: 0.7;
-          }
-          50% {
-            transform: scaleY(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </Card>
   );
 };
