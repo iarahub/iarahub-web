@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
-import { GraduationCap, UserIcon, ClockIcon, BrainIcon, BeakerIcon, Users, HeadphonesIcon } from 'lucide-react';
+import { GraduationCap, UserIcon, ClockIcon, BrainIcon, BeakerIcon, Users, HeadphonesIcon, PencilIcon } from 'lucide-react';
 import { ExamCalendar } from '../components/ExamCalendar';
 import CertifiedPeople from '../components/CertifiedPeople';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,7 @@ const Dashboard = () => {
     { name: 'Laboratórios', icon: <BeakerIcon className="h-8 w-8" />, route: '/labs' },
     { name: 'Tutores', icon: <Users className="h-8 w-8" />, route: '/tutors' },
     { name: 'Podcasts', icon: <HeadphonesIcon className="h-8 w-8" />, route: '/podcast' },
+    { name: 'Simulados', icon: <PencilIcon className="h-8 w-8" />, route: '/practice-exam' },
   ];
 
   const courses = [

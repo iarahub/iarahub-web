@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
-import { Label } from "../components/ui/label";
+import ExamList from '../components/practice-exam/ExamList';
+import QuestionView from '../components/practice-exam/QuestionView';
 import { toast } from "sonner";
 
 const PracticeExam = () => {
-  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -65,7 +61,6 @@ const PracticeExam = () => {
   };
 
   const parseQuestions = (rawText) => {
-    // Simple parser for the API response
     const questionBlocks = rawText.split(/\d+\.\s+/).filter(Boolean);
     return questionBlocks.map(block => {
       const lines = block.split('\n').filter(Boolean);
@@ -105,99 +100,27 @@ const PracticeExam = () => {
     }
   };
 
-  if (!examStarted) {
-    return (
-      <div>
-        <Navigation />
-        <div className="container mx-auto p-8">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-8">Simulados de Certificação AWS</h1>
-            <div className="grid gap-6">
-              {exams.map((exam, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-xl">{exam.name}</CardTitle>
-                    <CardDescription>{exam.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
-                      <div>
-                        <p className="text-gray-500">Questões</p>
-                        <p className="font-medium">{exam.questions}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-500">Duração</p>
-                        <p className="font-medium">{exam.duration}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-500">Nível</p>
-                        <p className="font-medium">{exam.level}</p>
-                      </div>
-                    </div>
-                    <Button 
-                      className="w-full"
-                      onClick={() => handleStartExam(exam)}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Carregando..." : "Iniciar Simulado"}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const currentQuestion = questions[currentQuestionIndex];
-
   return (
     <div>
       <Navigation />
       <div className="container mx-auto p-8">
-        <div className="max-w-3xl mx-auto">
-          <Card>
-            <CardHeader>
-              <CardTitle>Questão {currentQuestionIndex + 1} de {questions.length}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <p className="text-lg font-medium">{currentQuestion?.question}</p>
-                
-                <RadioGroup
-                  value={answers[currentQuestionIndex] || ""}
-                  onValueChange={handleAnswerSelect}
-                  className="space-y-3"
-                >
-                  {currentQuestion?.options.map((option, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <RadioGroupItem value={String.fromCharCode(97 + index)} id={`option-${index}`} />
-                      <Label htmlFor={`option-${index}`}>{option}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-
-                <div className="flex justify-between mt-6">
-                  <Button
-                    onClick={handlePreviousQuestion}
-                    disabled={currentQuestionIndex === 0}
-                    variant="outline"
-                  >
-                    Anterior
-                  </Button>
-                  <Button
-                    onClick={handleNextQuestion}
-                    disabled={currentQuestionIndex === questions.length - 1}
-                  >
-                    Próxima
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {!examStarted ? (
+          <ExamList 
+            exams={exams} 
+            onStartExam={handleStartExam} 
+            isLoading={isLoading} 
+          />
+        ) : (
+          <QuestionView 
+            currentQuestion={questions[currentQuestionIndex]}
+            currentQuestionIndex={currentQuestionIndex}
+            totalQuestions={questions.length}
+            selectedAnswer={answers[currentQuestionIndex]}
+            onAnswerSelect={handleAnswerSelect}
+            onPrevious={handlePreviousQuestion}
+            onNext={handleNextQuestion}
+          />
+        )}
       </div>
     </div>
   );
