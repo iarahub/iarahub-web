@@ -6,7 +6,6 @@ import { GraduationCap, UserIcon, ClockIcon, BrainIcon, BeakerIcon, Users } from
 import { ExamCalendar } from '../components/ExamCalendar';
 import CertifiedPeople from '../components/CertifiedPeople';
 import { useNavigate } from 'react-router-dom';
-import PodcastSection from '../components/dashboard/PodcastSection';
 import PracticeExamSection from '../components/dashboard/PracticeExamSection';
 
 const Dashboard = () => {
@@ -124,7 +123,6 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            <PodcastSection />
             <PracticeExamSection />
           </div>
 
