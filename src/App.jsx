@@ -39,72 +39,78 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-function App() {
+const AppContent = () => {
   const { user } = useAuth();
+  
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {user && <Navigation onLogout={() => {/* handle logout */}} />}
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/knowledge-base" element={
+          <ProtectedRoute>
+            <KnowledgeBase />
+          </ProtectedRoute>
+        } />
+        <Route path="/aws-academy" element={
+          <ProtectedRoute>
+            <AwsAcademy />
+          </ProtectedRoute>
+        } />
+        <Route path="/iara-tech" element={
+          <ProtectedRoute>
+            <IaraTech />
+          </ProtectedRoute>
+        } />
+        <Route path="/iuclick-tracker" element={
+          <ProtectedRoute>
+            <IuclickTracker />
+          </ProtectedRoute>
+        } />
+        <Route path="/onboarding" element={
+          <ProtectedRoute>
+            <Onboarding />
+          </ProtectedRoute>
+        } />
+        <Route path="/podcast" element={
+          <ProtectedRoute>
+            <Podcast />
+          </ProtectedRoute>
+        } />
+        <Route path="/practice-exam" element={
+          <ProtectedRoute>
+            <PracticeExam />
+          </ProtectedRoute>
+        } />
+        <Route path="/practice-exam/:examId" element={
+          <ProtectedRoute>
+            <PracticeExam />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </div>
+  );
+};
 
+function App() {
   return (
     <React.StrictMode>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
             <TooltipProvider>
               <Toaster />
-              <div className="min-h-screen bg-gray-100">
-                {user && <Navigation onLogout={() => {/* handle logout */}} />}
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/dashboard" element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/knowledge-base" element={
-                    <ProtectedRoute>
-                      <KnowledgeBase />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/aws-academy" element={
-                    <ProtectedRoute>
-                      <AwsAcademy />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/iara-tech" element={
-                    <ProtectedRoute>
-                      <IaraTech />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/iuclick-tracker" element={
-                    <ProtectedRoute>
-                      <IuclickTracker />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/onboarding" element={
-                    <ProtectedRoute>
-                      <Onboarding />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/podcast" element={
-                    <ProtectedRoute>
-                      <Podcast />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/practice-exam" element={
-                    <ProtectedRoute>
-                      <PracticeExam />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/practice-exam/:examId" element={
-                    <ProtectedRoute>
-                      <PracticeExam />
-                    </ProtectedRoute>
-                  } />
-                </Routes>
-              </div>
+              <AppContent />
             </TooltipProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </AuthProvider>
     </React.StrictMode>
   );
 }
